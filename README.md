@@ -1,6 +1,6 @@
 # AD-Practica03-AccessDataSL
 <p align="center"><image src="https://www.nutanix.com/content/dam/nutanix-cxo/thumbnails/database_thumb.jpg" width="750" height="460" /><br /><br />
-Practica Acceso a Datos donde aprendemos a montar una base de datos relacional en java y también a usar JPA-Hibernate.
+Práctica de Acceso a Datos donde hemos aprendido a montar una base de datos relacional en java y también a usar JPA-Hibernate.
 
 </p>
 
