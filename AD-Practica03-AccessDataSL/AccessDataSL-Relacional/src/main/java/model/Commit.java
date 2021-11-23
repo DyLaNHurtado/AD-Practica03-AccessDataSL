@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -15,9 +16,9 @@ public class Commit {
     private UUID idCommit;
     private String titulo;
     private String texto;
-    private LocalDate fecha;
-    private Repositorio repositorio;
-    private Proyecto proyecto;
-    private Programador autor;
-    private Issue issue;
+    private Date fecha;
+    private UUID repositorio;
+    private UUID proyecto;
+    private UUID autor;
+    private UUID issue;
 }

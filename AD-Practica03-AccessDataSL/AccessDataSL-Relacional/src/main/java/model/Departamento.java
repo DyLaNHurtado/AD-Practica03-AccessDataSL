@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,10 +14,10 @@ import java.util.UUID;
 public class Departamento {
     private UUID idDepartamento;
     private String nombre;
-    private Programador jefe;
+    private UUID idJefe;
     private Double presupuesto;
-    private List<Proyecto> proyFinalizados;
-    private List<Proyecto> proyDesarrollo;
+    private List<String> proyFinalizados;
+    private List<String> proyDesarrollo;
     private Double presupuestoAnual;
-    private List<Programador> historialJefes;
+    private List<String> historialJefes;
 }

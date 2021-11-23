@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,8 +15,8 @@ import java.util.UUID;
 
 public class Repositorio {
     private UUID idRepositorio;
-    private LocalDate fechaCreacion;
-    private Proyecto proyecto;
-    private List<Commit> commits;
-    private List<Issue> issues;
+    private Date fechaCreacion;
+    private UUID idProyecto;
+    private List<String> commits;
+    private List<String> issues;
 }
