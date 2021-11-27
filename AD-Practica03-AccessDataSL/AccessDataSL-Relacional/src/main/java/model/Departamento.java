@@ -1,6 +1,7 @@
 package model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,12 +10,12 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
+@Builder
 
 public class Departamento {
-    private UUID idDepartamento;
+    private String idDepartamento;
     private String nombre;
-    private UUID idJefe;
+    private String idJefe;
     private Double presupuesto;
     private List<String> proyFinalizados;
     private List<String> proyDesarrollo;

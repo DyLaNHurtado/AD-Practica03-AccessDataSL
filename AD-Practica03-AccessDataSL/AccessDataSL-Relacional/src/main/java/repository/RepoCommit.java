@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RepoCommit implements CrudRepository<Commit, UUID>{
+public class RepoCommit implements CrudRepository<Commit, String>{
     @Override
     public Optional<List<Commit>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los commits");
@@ -24,14 +24,14 @@ public class RepoCommit implements CrudRepository<Commit, UUID>{
         while (result.next()) {
             list.add(
                     new Commit(
-                            result.getObject("idCommit",java.util.UUID.class),
+                            result.getString("idCommit"),
                             result.getString("titulo"),
                             result.getString("texto"),
                             result.getDate("fecha"),
-                            result.getObject("repositorio",java.util.UUID.class),
-                            result.getObject("proyecto",java.util.UUID.class),
-                            result.getObject("autor",java.util.UUID.class),
-                            result.getObject("issue",java.util.UUID.class)
+                            result.getString("repositorio"),
+                            result.getString("proyecto"),
+                            result.getString("autor"),
+                            result.getString("issue")
                     ));
         }
         db.close();
@@ -39,7 +39,7 @@ public class RepoCommit implements CrudRepository<Commit, UUID>{
     }
 
     @Override
-    public Optional<Commit> getById(UUID id) throws SQLException {
+    public Optional<Commit> getById(String id) throws SQLException {
         System.out.println("Obteniendo commit con id: " + id);
         String query = "SELECT * FROM commit WHERE idCommit = ?";
         DataBaseController db = DataBaseController.getInstance();
@@ -48,14 +48,14 @@ public class RepoCommit implements CrudRepository<Commit, UUID>{
         ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar departamento con ID " + id));
         if (result.first()) {
             commit = new Commit(
-                    result.getObject("idCommit",java.util.UUID.class),
+                    result.getString("idCommit"),
                     result.getString("titulo"),
                     result.getString("texto"),
                     result.getDate("fecha"),
-                    result.getObject("repositorio",java.util.UUID.class),
-                    result.getObject("proyecto",java.util.UUID.class),
-                    result.getObject("autor",java.util.UUID.class),
-                    result.getObject("issue",java.util.UUID.class)
+                    result.getString("repositorio"),
+                    result.getString("proyecto"),
+                    result.getString("autor"),
+                    result.getString("issue")
             );}
         db.close();
         return Optional.ofNullable(commit);
@@ -67,7 +67,7 @@ public class RepoCommit implements CrudRepository<Commit, UUID>{
         String query = "INSERT INTO commit VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         DataBaseController db = DataBaseController.getInstance();
         db.open();
-        db.insert(query, UUID.randomUUID(),
+        db.insert(query, UUID.randomUUID().toString(),
                         commit.getTitulo(), commit.getTexto(), commit.getFecha(),
                         commit.getRepositorio(),commit.getProyecto(),commit.getAutor(),
                         commit.getIssue())

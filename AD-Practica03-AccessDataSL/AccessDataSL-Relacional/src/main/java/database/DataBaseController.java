@@ -69,12 +69,12 @@ public class DataBaseController {
         // porperties o en .env
         // imaginemos que el usuario y pasword estaán en .env y el resto en application.properties
         // si no los rellenamos aquí.
-        serverUrl = "localhost";
-        serverPort = "3306";
-        dataBaseName = "pruebas";
-        jdbcDriver = "com.mariadb.cj.jdbc.Driver";
-        user = "user";
-        password = "user1234";
+        this.serverUrl = "localhost";
+        this.serverPort = "3306";
+        this.dataBaseName = "adSL";
+        this.jdbcDriver = "com.mariadb.cj.jdbc.Driver";
+        this.user = "user";
+        this.password = "user1234";
     }
 
     /**

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RepoRepositorio implements CrudRepository<Repositorio, UUID>{
+public class RepoRepositorio implements CrudRepository<Repositorio, String>{
     @Override
     public Optional<List<Repositorio>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los repositorios");
@@ -25,9 +25,9 @@ public class RepoRepositorio implements CrudRepository<Repositorio, UUID>{
         while (result.next()) {
             list.add(
                     new Repositorio(
-                            result.getObject("idRepositorio",java.util.UUID.class),
+                            result.getString("idRepositorio"),
                             result.getDate("fechaCreacion"),
-                            result.getObject("idProyecto",java.util.UUID.class),
+                            result.getString("idProyecto"),
                             List.of(result.getString("commits").split(";")),
                             List.of(result.getString("issues").split(";"))
 
@@ -38,7 +38,7 @@ public class RepoRepositorio implements CrudRepository<Repositorio, UUID>{
     }
 
     @Override
-    public Optional<Repositorio> getById(UUID id) throws SQLException {
+    public Optional<Repositorio> getById(String id) throws SQLException {
         System.out.println("Obteniendo repositorio con id: " + id);
         String query = "SELECT * FROM repositorio WHERE idRepositorio = ?";
         DataBaseController db = DataBaseController.getInstance();
@@ -47,9 +47,9 @@ public class RepoRepositorio implements CrudRepository<Repositorio, UUID>{
         ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar repositorio con ID " + id));
         if (result.first()) {
             repositorio = new Repositorio(
-                    result.getObject("idRepositorio",java.util.UUID.class),
+                    result.getString("idRepositorio"),
                     result.getDate("fechaCreacion"),
-                    result.getObject("idProyecto",java.util.UUID.class),
+                    result.getString("idProyecto"),
                     List.of(result.getString("commits").split(";")),
                     List.of(result.getString("issues").split(";"))
             );}
@@ -63,7 +63,7 @@ public class RepoRepositorio implements CrudRepository<Repositorio, UUID>{
         String query = "INSERT INTO repositorio VALUES (?, ?, ?, ?, ?)";
         DataBaseController db = DataBaseController.getInstance();
         db.open();
-        db.insert(query, UUID.randomUUID(),
+        db.insert(query, UUID.randomUUID().toString(),
                         repositorio.getFechaCreacion(), repositorio.getIdProyecto(),
                         String.join(";", repositorio.getCommits()),
                         String.join(";", repositorio.getIssues()))

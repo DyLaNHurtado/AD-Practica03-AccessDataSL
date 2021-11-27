@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RepoIssue implements CrudRepository<Issue, UUID>{
+public class RepoIssue implements CrudRepository<Issue, String>{
     @Override
     public Optional<List<Issue>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los issues");
@@ -24,13 +24,13 @@ public class RepoIssue implements CrudRepository<Issue, UUID>{
         while (result.next()) {
             list.add(
                     new Issue(
-                            result.getObject("idIssue",java.util.UUID.class),
+                            result.getString("idIssue"),
                             result.getString("titulo"),
                             result.getString("texto"),
                             result.getDate("fecha"),
                             List.of(result.getString(String.join(";","programadores"))),
-                            result.getObject("proyecto",java.util.UUID.class),
-                            result.getObject("repositorio",java.util.UUID.class),
+                            result.getString("proyecto"),
+                            result.getString("repositorio"),
                             result.getString("estado")
                     ));
         }
@@ -39,7 +39,7 @@ public class RepoIssue implements CrudRepository<Issue, UUID>{
     }
 
     @Override
-    public Optional<Issue> getById(UUID id) throws SQLException {
+    public Optional<Issue> getById(String id) throws SQLException {
         System.out.println("Obteniendo issues con id: " + id);
         String query = "SELECT * FROM issues WHERE idIssue = ?";
         DataBaseController db = DataBaseController.getInstance();
@@ -48,13 +48,13 @@ public class RepoIssue implements CrudRepository<Issue, UUID>{
         ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar departamento con ID " + id));
         if (result.first()) {
             issue = new Issue(
-                    result.getObject("idIssue",java.util.UUID.class),
+                    result.getString("idIssue"),
                     result.getString("titulo"),
                     result.getString("texto"),
                     result.getDate("fecha"),
                     List.of(result.getString(String.join(";","programadores"))),
-                    result.getObject("proyecto",java.util.UUID.class),
-                    result.getObject("repositorio",java.util.UUID.class),
+                    result.getString("proyecto"),
+                    result.getString("repositorio"),
                     result.getString("estado")
             );}
         db.close();

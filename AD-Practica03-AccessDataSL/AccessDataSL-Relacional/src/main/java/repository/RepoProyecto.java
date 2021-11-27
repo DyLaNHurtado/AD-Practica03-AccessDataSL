@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RepoProyecto implements CrudRepository<Proyecto, UUID>{
+public class RepoProyecto implements CrudRepository<Proyecto, String>{
     @Override
     public Optional<List<Proyecto>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los proyecto");
@@ -24,14 +24,14 @@ public class RepoProyecto implements CrudRepository<Proyecto, UUID>{
         while (result.next()) {
             list.add(
                     new Proyecto(
-                            result.getObject("idProyecto",java.util.UUID.class),
+                            result.getString("idProyecto"),
                             result.getString("nombre"),
-                            result.getObject("idJefe",java.util.UUID.class),
+                            result.getString("idJefe"),
                             result.getDouble("presupuesto"),
                             result.getDate("fechaInicio"),
                             result.getDate("fechaFin"),
                             List.of(result.getString("tecnologias").split(";")),
-                            result.getObject("idRepositorio",java.util.UUID.class)
+                            result.getString("idRepositorio")
                     ));
         }
         db.close();
@@ -39,7 +39,7 @@ public class RepoProyecto implements CrudRepository<Proyecto, UUID>{
     }
 
     @Override
-    public Optional<Proyecto> getById(UUID id) throws SQLException {
+    public Optional<Proyecto> getById(String id) throws SQLException {
         System.out.println("Obteniendo proyecto con id: " + id);
         String query = "SELECT * FROM proyecto WHERE idProyecto = ?";
         DataBaseController db = DataBaseController.getInstance();
@@ -48,14 +48,14 @@ public class RepoProyecto implements CrudRepository<Proyecto, UUID>{
         ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar departamento con ID " + id));
         if (result.first()) {
             proyecto = new Proyecto(
-                    result.getObject("idProyecto",java.util.UUID.class),
+                    result.getString("idProyecto"),
                     result.getString("nombre"),
-                    result.getObject("idJefe",java.util.UUID.class),
+                    result.getString("idJefe"),
                     result.getDouble("presupuesto"),
                     result.getDate("fechaInicio"),
                     result.getDate("fechaFin"),
                     List.of(result.getString("tecnologias").split(";")),
-                    result.getObject("idRepositorio",java.util.UUID.class)
+                    result.getString("idRepositorio")
             );}
         db.close();
         return Optional.ofNullable(proyecto);
@@ -67,7 +67,7 @@ public class RepoProyecto implements CrudRepository<Proyecto, UUID>{
         String query = "INSERT INTO proyecto VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         DataBaseController db = DataBaseController.getInstance();
         db.open();
-        db.insert(query, UUID.randomUUID(),
+        db.insert(query, UUID.randomUUID().toString(),
                         proyecto.getNombre(), proyecto.getIdJefe(), proyecto.getPresupuesto(),
                         proyecto.getFechaInicio(),proyecto.getFechaFin(),
                         String.join(";", proyecto.getTecnologias()),

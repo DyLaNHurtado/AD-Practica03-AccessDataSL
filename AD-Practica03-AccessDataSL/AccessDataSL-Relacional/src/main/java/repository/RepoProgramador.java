@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RepoProgramador implements CrudRepository<Programador, UUID> {
+public class RepoProgramador implements CrudRepository<Programador, String> {
 
     @Override
     public Optional<List<Programador>> getAll() throws SQLException {
@@ -24,10 +24,10 @@ public class RepoProgramador implements CrudRepository<Programador, UUID> {
             while (result.next()) {
                 list.add(
                         new Programador(
-                                result.getObject("idProgramador", java.util.UUID.class),
+                                result.getString("idProgramador"),
                                 result.getString("nombre"),
                                 result.getDate("fechaAlta"),
-                                result.getObject("idDepartamento", java.util.UUID.class),
+                                result.getString("idDepartamento"),
                                 List.of(result.getString("proyectosParticipa").split(";")),
                                 List.of(result.getString("commits").split(";")),
                                 List.of(result.getString("issues").split(";")),
@@ -40,7 +40,7 @@ public class RepoProgramador implements CrudRepository<Programador, UUID> {
     }
 
     @Override
-    public Optional<Programador> getById(UUID id) throws SQLException {
+    public Optional<Programador> getById(String id) throws SQLException {
         System.out.println("Obteniendo programador con id: " + id);
         String query = "SELECT * FROM programador WHERE idProgramador = ?";
         DataBaseController db = DataBaseController.getInstance();
@@ -49,10 +49,10 @@ public class RepoProgramador implements CrudRepository<Programador, UUID> {
             ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar programadores con ID " + id));
             if (result.first()) {
                 programador = new Programador(
-                        result.getObject("idProgramador", java.util.UUID.class),
+                        result.getString("idProgramador"),
                         result.getString("nombre"),
                         result.getDate("fechaAlta"),
-                        result.getObject("idDepartamento", java.util.UUID.class),
+                        result.getString("idDepartamento"),
                         List.of(result.getString("proyectosParticipa").split(";")),
                         List.of(result.getString("commits").split(";")),
                         List.of(result.getString("issues").split(";")),
@@ -70,7 +70,7 @@ public class RepoProgramador implements CrudRepository<Programador, UUID> {
         String query = "INSERT INTO programador VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         DataBaseController db = DataBaseController.getInstance();
         db.open();
-        db.insert(query, UUID.randomUUID(),
+        db.insert(query, UUID.randomUUID().toString(),
                         programador.getNombre(), programador.getFechaAlta(), programador.getIdDepartamento(),
                         String.join(";", programador.getProyectosParticipa()),
                         String.join(";", programador.getCommits()),

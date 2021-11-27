@@ -1,4 +1,3 @@
-
 SET NAMES utf8;
 SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
@@ -24,7 +23,7 @@ CREATE TABLE `commit`
   DEFAULT CHARSET = utf8mb4;
 
 INSERT INTO `commit` (`idCommit`, `titulo`, `texto`, `fecha`,
-                     `repositorio`, `proyecto`, `autor`,`issue`)
+                      `repositorio`, `proyecto`, `autor`, `issue`)
 VALUES ('5b64bfd6-08e4-4325-b037-bd4fcfafe783', 'commit 1', 'texto 1',
         '2002-02-01', 'f64c5364-faa7-41b7-bca9-3b27f95d8fa8',
         '81ee1211-760c-493d-968a-380e6af67363', '53269670-1586-49ac-9df5-62ddd55f96cc',
@@ -44,7 +43,7 @@ VALUES ('5b64bfd6-08e4-4325-b037-bd4fcfafe783', 'commit 1', 'texto 1',
 
 CREATE TABLE `conocimiento`
 (
-    `idProgramador` varchar(36) NOT NULL,
+    `idProgramador` varchar(36)  NOT NULL,
     `tecnologias`   varchar(255) NOT NULL,
     KEY `idProgramador` (`idProgramador`),
     KEY `tecnologias` (`tecnologias`),
@@ -81,7 +80,7 @@ VALUES ('1376acc9-79a9-4bf1-9084-c82e9a07f432',
 
 CREATE TABLE `creaciones`
 (
-    `idIssue`       varchar(36) NOT NULL,
+    `idIssue`       varchar(36)  NOT NULL,
     `idProgramador` varchar(255) NOT NULL,
     KEY `idIssue` (`idIssue`),
     KEY `idProgramador` (`idProgramador`),
@@ -97,10 +96,10 @@ VALUES ('1f9b764e-570f-4041-a0c9-fc58a794eb0d',
         '53269670-1586-49ac-9df5-62ddd55f96cc;1376acc9-79a9-4bf1-9084-c82e9a07f432'),
 
        ('7e96e277-26bc-4c08-a21e-6d92eb7638de',
-            'd63f0d73-3f1b-4afd-b5d0-821449daa4a3'),
+        'd63f0d73-3f1b-4afd-b5d0-821449daa4a3'),
 
        ('6c5b7c5a-d30b-400f-9c11-84dc2b49f01e',
-            '606aba4c-b76e-4fa3-9eb8-48e20d729353');
+        '606aba4c-b76e-4fa3-9eb8-48e20d729353');
 
 
 CREATE TABLE `departamento`
@@ -114,7 +113,12 @@ CREATE TABLE `departamento`
     `proyDesarrollo`   varchar(255) NOT NULL,
     `presupuestoAnual` double       NOT NULL,
     `historialJefes`   varchar(255) NOT NULL,
-    PRIMARY KEY (`idDepartamento`)
+    PRIMARY KEY (`idDepartamento`),
+    CONSTRAINT `departamento_ibfk_1` FOREIGN KEY (`idJefe`) REFERENCES `programador` (`idProgramador`),
+    CONSTRAINT `departamento_ibfk_2` FOREIGN KEY (`trabajadores`) REFERENCES `programador` (`idProgramador`),
+    CONSTRAINT `departamento_ibfk_3` FOREIGN KEY (`proyFinalizados`) REFERENCES `proyecto` (`idProyecto`),
+    CONSTRAINT `departamento_ibfk_4` FOREIGN KEY (`proyDesarrollo`) REFERENCES `proyecto` (`idProyecto`),
+    CONSTRAINT `departamento_ibfk_5` FOREIGN KEY (`historialJefes`) REFERENCES `programador` (`idProgramador`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
@@ -128,14 +132,14 @@ VALUES ('1e89386d-be37-4930-b6ae-bcba6c9917b4', 'Recursos Humanos', '53269670-15
 
        ('2d1d1422-fede-4e27-8883-3ffdb1be1a7c', 'Marketing', '1376acc9-79a9-4bf1-9084-c82e9a07f432',
         '1376acc9-79a9-4bf1-9084-c82e9a07f432;5cc55142-469b-4d42-9b9b-b9df2614bcc7;d63f0d73-3f1b-4afd-b5d0-821449daa4a3',
-        12000,'',
+        12000, '',
         'f89062d9-ba34-40a4-b6af-a21a0dc093be;10f2db5c-a0c3-40ec-a1bf-a95cab6bebdf', 100000,
         '606aba4c-b76e-4fa3-9eb8-48e20d729353;d63f0d73-3f1b-4afd-b5d0-821449daa4a3;1376acc9-79a9-4bf1-9084-c82e9a07f432'),
 
 
        ('512a0695-3294-4c2c-86d9-4babd4485fa8', 'Logistica', '606aba4c-b76e-4fa3-9eb8-48e20d729353',
         '606aba4c-b76e-4fa3-9eb8-48e20d729353;6a69db52-f903-4978-ac08-dc32831d362e;6ba7cbcb-7f95-4c6f-b735-2a5e0a363e52',
-        15500,'3730b275-3ed2-4d77-8ff4-f5ce82ea98ea;81ee1211-760c-493d-968a-380e6af67363',
+        15500, '3730b275-3ed2-4d77-8ff4-f5ce82ea98ea;81ee1211-760c-493d-968a-380e6af67363',
         'f89062d9-ba34-40a4-b6af-a21a0dc093be', 92800,
         '5cc55142-469b-4d42-9b9b-b9df2614bcc7;606aba4c-b76e-4fa3-9eb8-48e20d729353');
 
@@ -146,7 +150,7 @@ CREATE TABLE `issue`
     `titulo`        varchar(36)  NOT NULL,
     `texto`         varchar(150) NOT NULL,
     `fecha`         date         NOT NULL,
-    `programadores` varchar(255)  NOT NULL,
+    `programadores` varchar(255) NOT NULL,
     `proyecto`      varchar(36)  NOT NULL,
     `repositorio`   varchar(36)  NOT NULL,
     `estado`        varchar(10)  NOT NULL,
@@ -183,57 +187,58 @@ CREATE TABLE `programador`
     `commits`            varchar(255) NOT NULL,
     `issues`             varchar(255) NOT NULL,
     `tecnologias`        varchar(255) NOT NULL,
+    `salario`            double       NOT NULL,
     PRIMARY KEY (`idProgramador`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 INSERT INTO `programador` (`idProgramador`, `nombre`, `fechaAlta`, `idDepartamento`, `proyectosParticipa`, `commits`,
-                           `issues`, `tecnologias`)
+                           `issues`, `tecnologias`,`salario`)
 VALUES ('1376acc9-79a9-4bf1-9084-c82e9a07f432', 'Barnie Stinson', '2019-06-03', '2d1d1422-fede-4e27-8883-3ffdb1be1a7c',
         '233b5d47-0ced-4e6f-8982-b2f95b6b25b9;81ee1211-760c-493d-968a-380e6af67363',
         '00efadeb-cdc5-456d-9b4a-bdd8d6fc2db5',
-        '1f9b764e-570f-4041-a0c9-fc58a794eb0d', '20bcca63-7b60-4a43-bb10-4c9735587d16'),
+        '1f9b764e-570f-4041-a0c9-fc58a794eb0d', '20bcca63-7b60-4a43-bb10-4c9735587d16',1500),
 
 
        ('53269670-1586-49ac-9df5-62ddd55f96cc', 'Rick Sanchez', '2015-11-09', '1e89386d-be37-4930-b6ae-bcba6c9917b4',
         '233b5d47-0ced-4e6f-8982-b2f95b6b25b9;81ee1211-760c-493d-968a-380e6af67363',
         '699b5f3f-8e62-41e1-ba08-1546f0ab5dfb;5b64bfd6-08e4-4325-b037-bd4fcfafe783',
         '7e96e277-26bc-4c08-a21e-6d92eb7638de',
-        '20bcca63-7b60-4a43-bb10-4c9735587d16;4f119f1b-7ccf-49f4-b56f-fdace8589b1c'),
+        '20bcca63-7b60-4a43-bb10-4c9735587d16;4f119f1b-7ccf-49f4-b56f-fdace8589b1c',1200),
 
        ('606aba4c-b76e-4fa3-9eb8-48e20d729353', 'Andres Iniesta', '2010-02-27', '512a0695-3294-4c2c-86d9-4babd4485fa8',
         '2d1d1422-fede-4e27-8883-3ffdb1be1a7c', '6e0bb43f-c639-4a79-8ea9-eb446d5bd624',
         '6c5b7c5a-d30b-400f-9c11-84dc2b49f01e',
-        '20bcca63-7b60-4a43-bb10-4c9735587d16;cb231a1d-ffc8-4a64-b090-1334f5f4f740'),
+        '20bcca63-7b60-4a43-bb10-4c9735587d16;cb231a1d-ffc8-4a64-b090-1334f5f4f740',1500),
 
        ('6a69db52-f903-4978-ac08-dc32831d362e', 'Hulk Hogan', '2001-03-21', '512a0695-3294-4c2c-86d9-4babd4485fa8',
         '2d1d1422-fede-4e27-8883-3ffdb1be1a7c', '1ebfc166-3cd9-4303-a322-f57dc5ee3e5e',
         '',
-        '20bcca63-7b60-4a43-bb10-4c9735587d16;cb231a1d-ffc8-4a64-b090-1334f5f4f740'),
+        '20bcca63-7b60-4a43-bb10-4c9735587d16;cb231a1d-ffc8-4a64-b090-1334f5f4f740',1300),
 
 
        ('6ba7cbcb-7f95-4c6f-b735-2a5e0a363e52', 'Mark Knofler', '1999-05-23', '512a0695-3294-4c2c-86d9-4babd4485fa8',
         '2d1d1422-fede-4e27-8883-3ffdb1be1a7c', 'f89062d9-ba34-40a4-b6af-a21a0dc093be',
         '',
-        'cb231a1d-ffc8-4a64-b090-1334f5f4f740'),
+        'cb231a1d-ffc8-4a64-b090-1334f5f4f740',2000),
 
 
        ('ba2bfe86-855d-4f2c-bb92-2ad8f1db788e', 'Jack Sparrow', '2006-12-07', '1e89386d-be37-4930-b6ae-bcba6c9917b4',
         '233b5d47-0ced-4e6f-8982-b2f95b6b25b9', '649ad8bd-6d6e-4430-af04-9fcfe370db84',
         '6390f634-1ef0-48c2-ab98-b39a99b6c810',
-        '699b5f3f-8e62-41e1-ba08-1546f0ab5dfb'),
+        '699b5f3f-8e62-41e1-ba08-1546f0ab5dfb',900),
 
 
        ('5cc55142-469b-4d42-9b9b-b9df2614bcc7', 'Will Smith', '2003-11-11', '2d1d1422-fede-4e27-8883-3ffdb1be1a7c',
         '233b5d47-0ced-4e6f-8982-b2f95b6b25b9', '',
         '',
-        '20bcca63-7b60-4a43-bb10-4c9735587d16'),
+        '20bcca63-7b60-4a43-bb10-4c9735587d16',3000),
 
        ('d63f0d73-3f1b-4afd-b5d0-821449daa4a3', 'Mike Wazowski', '2011-04-03', '2d1d1422-fede-4e27-8883-3ffdb1be1a7c',
         'f89062d9-ba34-40a4-b6af-a21a0dc093be;10f2db5c-a0c3-40ec-a1bf-a95cab6bebdf;3730b275-3ed2-4d77-8ff4-f5ce82ea98ea',
         '3a1690b0-b7f3-4303-8413-1f63578c3194',
         '',
-        '20bcca63-7b60-4a43-bb10-4c9735587d16;4f119f1b-7ccf-49f4-b56f-fdace8589b1c');
+        '20bcca63-7b60-4a43-bb10-4c9735587d16;4f119f1b-7ccf-49f4-b56f-fdace8589b1c',1600);
 
 
 
@@ -295,8 +300,8 @@ VALUES ('81ee1211-760c-493d-968a-380e6af67363', 'Power Project',
 
 CREATE TABLE `repositorio`
 (
-    `idRepositorio` varchar(36) NOT NULL,
-    `idProyecto`    varchar(36) NOT NULL,
+    `idRepositorio` varchar(36)  NOT NULL,
+    `idProyecto`    varchar(36)  NOT NULL,
     `commits`       varchar(255) NOT NULL,
     `issues`        varchar(255) NOT NULL,
     PRIMARY KEY (`idRepositorio`),
@@ -309,8 +314,8 @@ CREATE TABLE `repositorio`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-INSERT INTO`repositorio` (`idRepositorio`, `idProyecto`,
-                          `commits`, `issues`)
+INSERT INTO `repositorio` (`idRepositorio`, `idProyecto`,
+                           `commits`, `issues`)
 
 VALUES ('f64c5364-faa7-41b7-bca9-3b27f95d8fa8', '81ee1211-760c-493d-968a-380e6af67363',
         '5b64bfd6-08e4-4325-b037-bd4fcfafe783',
@@ -359,7 +364,7 @@ VALUES ('20bcca63-7b60-4a43-bb10-4c9735587d16',
 
 CREATE TABLE `utilidades`
 (
-    `idProyecto`  varchar(36) NOT NULL,
+    `idProyecto`  varchar(36)  NOT NULL,
     `tecnologias` varchar(255) NOT NULL,
     KEY `idProyecto` (`idProyecto`),
     KEY `tecnologias` (`tecnologias`),

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RepoDepartamento implements CrudRepository<Departamento, UUID> {
+public class RepoDepartamento implements CrudRepository<Departamento, String> {
     @Override
     public Optional<List<Departamento>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los departamentos");
@@ -24,9 +24,9 @@ public class RepoDepartamento implements CrudRepository<Departamento, UUID> {
         while (result.next()) {
             list.add(
                     new Departamento(
-                            result.getObject("idDepartamento",java.util.UUID.class),
+                            result.getString("idDepartamento"),
                             result.getString("nombre"),
-                            result.getObject("idJefe",java.util.UUID.class),
+                            result.getString("idJefe"),
                             result.getDouble("presupuesto"),
                             List.of(result.getString("proyFinalizados").split(";")),
                             List.of(result.getString("proyDesarrollo").split(";")),
@@ -40,7 +40,7 @@ public class RepoDepartamento implements CrudRepository<Departamento, UUID> {
     }
 
     @Override
-    public Optional<Departamento> getById(UUID id) throws SQLException {
+    public Optional<Departamento> getById(String id) throws SQLException {
         System.out.println("Obteniendo departamento con id: " + id);
         String query = "SELECT * FROM departamento WHERE idDepartamento = ?";
         DataBaseController db = DataBaseController.getInstance();
@@ -49,9 +49,9 @@ public class RepoDepartamento implements CrudRepository<Departamento, UUID> {
         ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar departamento con ID " + id));
         if (result.first()) {
             departamento = new Departamento(
-                    result.getObject("idDepartamento",java.util.UUID.class),
+                    result.getString("idDepartamento"),
                     result.getString("nombre"),
-                    result.getObject("idJefe",java.util.UUID.class),
+                    result.getString("idJefe"),
                     result.getDouble("presupuesto"),
                     List.of(result.getString("proyFinalizados").split(";")),
                     List.of(result.getString("proyDesarrollo").split(";")),
@@ -68,7 +68,7 @@ public class RepoDepartamento implements CrudRepository<Departamento, UUID> {
         String query = "INSERT INTO departamento VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         DataBaseController db = DataBaseController.getInstance();
         db.open();
-        db.insert(query, UUID.randomUUID(),
+        db.insert(query, UUID.randomUUID().toString(),
                         departamento.getNombre(), departamento.getIdJefe(), departamento.getPresupuesto(),
                         String.join(";", departamento.getProyFinalizados()),
                         String.join(";", departamento.getProyDesarrollo()),

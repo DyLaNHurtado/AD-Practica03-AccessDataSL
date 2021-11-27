@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RepoTecnologia implements CrudRepository<Tecnologia, UUID>{
+public class RepoTecnologia implements CrudRepository<Tecnologia, String>{
     @Override
     public Optional<List<Tecnologia>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los tecnologia");
@@ -25,7 +25,7 @@ public class RepoTecnologia implements CrudRepository<Tecnologia, UUID>{
         while (result.next()) {
             list.add(
                     new Tecnologia(
-                            result.getObject("idTecnologia",java.util.UUID.class),
+                            result.getString("idTecnologia"),
                             result.getString("nombre")
 
                     ));
@@ -35,7 +35,7 @@ public class RepoTecnologia implements CrudRepository<Tecnologia, UUID>{
     }
 
     @Override
-    public Optional<Tecnologia> getById(UUID id) throws SQLException {
+    public Optional<Tecnologia> getById(String id) throws SQLException {
         System.out.println("Obteniendo tecnologia con id: " + id);
         String query = "SELECT * FROM tecnologia WHERE idTecnologia = ?";
         DataBaseController db = DataBaseController.getInstance();
@@ -44,7 +44,7 @@ public class RepoTecnologia implements CrudRepository<Tecnologia, UUID>{
         ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar departamento con ID " + id));
         if (result.first()) {
             tecnologia = new Tecnologia(
-                    result.getObject("idTecnologia",java.util.UUID.class),
+                    result.getString("idTecnologia"),
                     result.getString("nombre")
             );}
         db.close();
@@ -57,7 +57,7 @@ public class RepoTecnologia implements CrudRepository<Tecnologia, UUID>{
         String query = "INSERT INTO tecnologia VALUES (?, ?)";
         DataBaseController db = DataBaseController.getInstance();
         db.open();
-        db.insert(query, UUID.randomUUID(),
+        db.insert(query, UUID.randomUUID().toString(),
                 tecnologia.getNombre())
                 .orElseThrow(() -> new SQLException("Error insertar tecnologia"));
 
