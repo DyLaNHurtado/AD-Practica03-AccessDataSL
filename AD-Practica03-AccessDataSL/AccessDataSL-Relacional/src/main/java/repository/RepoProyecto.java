@@ -3,6 +3,7 @@ package repository;
 import database.DataBaseController;
 import model.Departamento;
 import model.Proyecto;
+import model.Repositorio;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,8 +32,8 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
                             result.getDate("fechaInicio"),
                             result.getDate("fechaFin"),
                             List.of(result.getString("tecnologias").split(";")),
-                            result.getString("idRepositorio")
-                    ));
+                            result.getString("idRepositorio"),
+                            result.getString("idDepartamento")));
         }
         db.close();
         return Optional.of(list);
@@ -55,55 +56,150 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
                     result.getDate("fechaInicio"),
                     result.getDate("fechaFin"),
                     List.of(result.getString("tecnologias").split(";")),
-                    result.getString("idRepositorio")
-            );
-        }
+                    result.getString("idRepositorio"),
+                    result.getString("idDepartamento")
+            );}
         db.close();
         return Optional.ofNullable(proyecto);
     }
 
     @Override
     public Optional<Proyecto> save(Proyecto proyecto) throws SQLException {
-        System.out.println("Insertando proyecto");
-        String query = "INSERT INTO proyecto VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        DataBaseController db = DataBaseController.getInstance();
-        db.open();
-        db.insert(query, UUID.randomUUID().toString(),
-                        proyecto.getNombre(), proyecto.getIdJefe(), proyecto.getPresupuesto(),
-                        proyecto.getFechaInicio(), proyecto.getFechaFin(),
-                        String.join(";", proyecto.getTecnologias()),
-                        proyecto.getIdRepositorio())
-                .orElseThrow(() -> new SQLException("Error insertar proyecto"));
+        //Comprobacion y restricciones
+        RepoDepartamento repoDepartamento = new RepoDepartamento();
+        //Si no coinciden los jefes de departamento
+        if (repoDepartamento.getByIdJefe(proyecto.getIdJefe()).isEmpty()){
+            Departamento departamento = repoDepartamento.getByIdJefe(proyecto.getIdJefe()).get();
+            //Si el jefe no esta en trabajadores se inserta el jefe
+            if(!(departamento.getTrabajadores().get(0).contains(proyecto.getIdJefe()))) {
 
+                System.out.println("Insertando proyecto");
+                String query = "INSERT INTO proyecto VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                DataBaseController db = DataBaseController.getInstance();
+                db.open();
+                db.insert(query, UUID.randomUUID().toString(),
+                                proyecto.getNombre(), proyecto.getIdJefe(), proyecto.getPresupuesto(),
+                                proyecto.getFechaInicio(), proyecto.getFechaFin(),
+                                String.join(";", proyecto.getTecnologias()),
+                                proyecto.getIdRepositorio())
+                        .orElseThrow(() -> new SQLException("Error insertar proyecto"));
+            }
+        }
 
         return Optional.of(proyecto);
     }
 
     @Override
     public Optional<Proyecto> update(Proyecto proyecto) throws SQLException {
-        System.out.println("Actualizando proyecto con id: " + proyecto.getIdProyecto());
-        String query = "UPDATE proyecto SET idProyecto = ?, nombre = ?, idJefe = ?, presupuesto = ?, fechaInicio = ?, fechaFin = ? ,tecnologias = ?, idRepositorio = ? WHERE idProyecto = ?";
-        DataBaseController db = DataBaseController.getInstance();
-        db.open();
-        db.update(query, proyecto.getIdProyecto(),
-                proyecto.getNombre(), proyecto.getIdJefe(), proyecto.getPresupuesto(),
-                proyecto.getFechaInicio(), proyecto.getFechaFin(),
-                String.join(";", proyecto.getTecnologias()),
-                proyecto.getIdRepositorio());
-        db.close();
+        //Comprobacion y restricciones
+        RepoDepartamento repoDepartamento = new RepoDepartamento();
+        //Si no coinciden los jefes de departamento
+        if (repoDepartamento.getByIdJefe(proyecto.getIdJefe()).isEmpty()){
+            Departamento departamento = repoDepartamento.getByIdJefe(proyecto.getIdJefe()).get();
+            //Si el jefe no esta en trabajadores se actualiza el jefe
+            if(!(departamento.getTrabajadores().get(0).contains(proyecto.getIdJefe()))) {
 
+                System.out.println("Actualizando proyecto con id: " + proyecto.getIdProyecto());
+                String query = "UPDATE proyecto SET idProyecto = ?, nombre = ?, idJefe = ?, presupuesto = ?, fechaInicio = ?, fechaFin = ? ,tecnologias = ?, idRepositorio = ? WHERE idProyecto = ?";
+                DataBaseController db = DataBaseController.getInstance();
+                db.open();
+                db.update(query, proyecto.getIdProyecto(),
+                        proyecto.getNombre(), proyecto.getIdJefe(), proyecto.getPresupuesto(),
+                        proyecto.getFechaInicio(), proyecto.getFechaFin(),
+                        String.join(";", proyecto.getTecnologias()),
+                        proyecto.getIdRepositorio());
+                db.close();
+            }}
         return Optional.of(proyecto);
     }
 
     @Override
     public Optional<Proyecto> delete(Proyecto proyecto) throws SQLException {
-        System.out.println("Eliminando proyecto con id: " + proyecto.getIdProyecto());
-        String query = "DELETE FROM proyecto WHERE idProyecto = ?";
-        DataBaseController db = DataBaseController.getInstance();
-        db.open();
-        db.delete(query, proyecto.getIdProyecto());
-        db.close();
 
+        RepoRepositorio repoRepositorio = new RepoRepositorio();
+        if(repoRepositorio.getById(proyecto.getIdRepositorio()).isPresent()) {
+            Repositorio repositorio = repoRepositorio.getById(proyecto.getIdRepositorio()).get();
+            //Cuando borras proyecto borras repositorio
+            repoRepositorio.delete(repositorio);
+
+            System.out.println("Eliminando proyecto con id: " + proyecto.getIdProyecto());
+            String query = "DELETE FROM proyecto WHERE idProyecto = ?";
+            DataBaseController db = DataBaseController.getInstance();
+            db.open();
+            db.delete(query, proyecto.getIdProyecto());
+            db.close();
+        }
         return Optional.of(proyecto);
+    }
+
+    public Optional<Proyecto> getByIdJefe(String id) throws SQLException {
+        System.out.println("Obteniendo proyecto con idJefe: " + id);
+        String query = "SELECT * FROM proyecto WHERE idJefe = ?";
+        DataBaseController db = DataBaseController.getInstance();
+        Proyecto proyecto = null;
+        db.open();
+        ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar departamento con IdJefe " + id));
+        if (result.first()) {
+            proyecto = new Proyecto(
+                    result.getString("idProyecto"),
+                    result.getString("nombre"),
+                    result.getString("idJefe"),
+                    result.getDouble("presupuesto"),
+                    result.getDate("fechaInicio"),
+                    result.getDate("fechaFin"),
+                    List.of(result.getString("tecnologias").split(";")),
+                    result.getString("idRepositorio"),
+                    result.getString("idDepartamento")
+            );}
+        db.close();
+        return Optional.ofNullable(proyecto);
+    }
+
+    public Optional<Proyecto> getByIdDepartamento(String id) throws SQLException {
+        System.out.println("Obteniendo id de Departamento: " + id);
+        String query = "SELECT * FROM proyecto WHERE idDepartamento = ?";
+        DataBaseController db = DataBaseController.getInstance();
+        Proyecto proyecto = null;
+        db.open();
+        ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar departamento con idDepartamento " + id));
+        if (result.first()) {
+            proyecto = new Proyecto(
+                    result.getString("idProyecto"),
+                    result.getString("nombre"),
+                    result.getString("idJefe"),
+                    result.getDouble("presupuesto"),
+                    result.getDate("fechaInicio"),
+                    result.getDate("fechaFin"),
+                    List.of(result.getString("tecnologias").split(";")),
+                    result.getString("idRepositorio"),
+                    result.getString("idDepartamento")//ojo
+            );}
+        db.close();
+        return Optional.ofNullable(proyecto);
+    }
+
+    public Optional<List<Proyecto>> getAllByIdDepartamento(String id) throws SQLException {
+        System.out.println("Obteniendo todos los proyecto");
+        String query = "SELECT * FROM proyecto WHERE idDepartamento = ?";
+        DataBaseController db = DataBaseController.getInstance();
+        ArrayList<Proyecto> list = null;
+        db.open();
+        ResultSet result = db.select(query,id).orElseThrow(() -> new SQLException("Error al consultar proyecto"));
+        list = new ArrayList<>();
+        while (result.next()) {
+            list.add(
+                    new Proyecto(
+                            result.getString("idProyecto"),
+                            result.getString("nombre"),
+                            result.getString("idJefe"),
+                            result.getDouble("presupuesto"),
+                            result.getDate("fechaInicio"),
+                            result.getDate("fechaFin"),
+                            List.of(result.getString("tecnologias").split(";")),
+                            result.getString("idRepositorio"),
+                            result.getString("idDepartamento")));
+        }
+        db.close();
+        return Optional.of(list);
     }
 }

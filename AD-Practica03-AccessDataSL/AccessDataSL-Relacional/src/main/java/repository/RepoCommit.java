@@ -3,6 +3,7 @@ package repository;
 import database.DataBaseController;
 import model.Commit;
 import model.Departamento;
+import model.Issue;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -64,22 +65,31 @@ public class RepoCommit implements CrudRepository<Commit, String> {
 
     @Override
     public Optional<Commit> save(Commit commit) throws SQLException {
-        System.out.println("Insertando commit");
-        String query = "INSERT INTO commit VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        DataBaseController db = DataBaseController.getInstance();
-        db.open();
-        db.insert(query, UUID.randomUUID().toString(),
-                        commit.getTitulo(), commit.getTexto(), commit.getFecha(),
-                        commit.getRepositorio(), commit.getProyecto(), commit.getAutor(),
-                        commit.getIssue())
-                .orElseThrow(() -> new SQLException("Error insertar commit"));
 
-
+        //Restricciones
+        RepoIssue repoIssue = new RepoIssue();
+        if (repoIssue.getByProyecto(commit.getProyecto()).isPresent()) {
+            Issue issue = repoIssue.getByProyecto(commit.getProyecto()).get();
+            if (issue.getProgramadores().get(0).contains(commit.getAutor()) && repoIssue.getById(commit.getIssue()).isPresent()) {
+                issue.setEstado("pendiente");
+                System.out.println("Insertando commit");
+                String query = "INSERT INTO commit VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                DataBaseController db = DataBaseController.getInstance();
+                db.open();
+                db.insert(query, UUID.randomUUID().toString(),
+                                commit.getTitulo(), commit.getTexto(), commit.getFecha(),
+                                commit.getRepositorio(), commit.getProyecto(), commit.getAutor(),
+                                commit.getIssue())
+                        .orElseThrow(() -> new SQLException("Error insertar commit"));
+                issue.setEstado("terminada");
+            }
+        }
         return Optional.of(commit);
     }
 
     @Override
     public Optional<Commit> update(Commit commit) throws SQLException {
+
         System.out.println("Actualizando commit con id: " + commit.getIdCommit());
         String query = "UPDATE commit SET idCommit= ?, titulo = ?, texto = ?, fecha = ?, repositorio = ?, proyecto = ? ,autor = ?, issue = ? WHERE idCommit = ?";
         DataBaseController db = DataBaseController.getInstance();
@@ -104,4 +114,30 @@ public class RepoCommit implements CrudRepository<Commit, String> {
 
         return Optional.of(commit);
     }
+
+    public Optional<List<Commit>> getAllByRepositorio(String id) throws SQLException {
+        System.out.println("Obteniendo todos los commits");
+        String query = "SELECT * FROM commit WHERE repositorio = ?";
+        DataBaseController db = DataBaseController.getInstance();
+        ArrayList<Commit> list = null;
+        db.open();
+        ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar Commits"));
+        list = new ArrayList<>();
+        while (result.next()) {
+            list.add(
+                    new Commit(
+                            result.getString("idCommit"),
+                            result.getString("titulo"),
+                            result.getString("texto"),
+                            result.getDate("fecha"),
+                            result.getString("repositorio"),
+                            result.getString("proyecto"),
+                            result.getString("autor"),
+                            result.getString("issue")
+                    ));
+        }
+        db.close();
+        return Optional.of(list);
+    }
+
 }

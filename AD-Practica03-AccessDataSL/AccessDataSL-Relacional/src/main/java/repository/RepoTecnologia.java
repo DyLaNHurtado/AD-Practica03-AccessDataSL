@@ -46,8 +46,7 @@ public class RepoTecnologia implements CrudRepository<Tecnologia, String> {
             tecnologia = new Tecnologia(
                     result.getString("idTecnologia"),
                     result.getString("nombre")
-            );
-        }
+            );}
         db.close();
         return Optional.ofNullable(tecnologia);
     }

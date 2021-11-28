@@ -1,9 +1,7 @@
 package repository;
 
 import database.DataBaseController;
-import model.Departamento;
-import model.Proyecto;
-import model.Repositorio;
+import model.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -52,8 +50,7 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String> {
                     result.getString("idProyecto"),
                     List.of(result.getString("commits").split(";")),
                     List.of(result.getString("issues").split(";"))
-            );
-        }
+            );}
         db.close();
         return Optional.ofNullable(repositorio);
     }
@@ -91,13 +88,40 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String> {
 
     @Override
     public Optional<Repositorio> delete(Repositorio repositorio) throws SQLException {
-        System.out.println("Eliminando repositorio con id: " + repositorio.getIdRepositorio());
-        String query = "DELETE FROM repositorio WHERE idRepositorio = ?";
-        DataBaseController db = DataBaseController.getInstance();
-        db.open();
-        db.delete(query, repositorio.getIdRepositorio());
-        db.close();
 
+        RepoCommit repoCommit = new RepoCommit();
+        RepoIssue repoIssue  = new RepoIssue();
+
+        if(repoCommit.getAllByRepositorio(repositorio.getIdRepositorio()).isPresent()
+        || repoIssue.getAllByRepositorio(repositorio.getIdRepositorio()).isPresent()) {
+            List<Commit> commits = repoCommit.getAllByRepositorio(repositorio.getIdRepositorio()).get();
+            List<Issue> issues = repoIssue.getAllByRepositorio(repositorio.getIdRepositorio()).get();
+            //Borrar con bucle
+
+            //Recorremos los issues que tiene el repositorio a borrar y los borramos
+            issues.forEach(x-> {
+                try {
+                    repoIssue.delete(x);
+                } catch (SQLException e) {
+                    System.err.println("No se ha podido borrar los issues de repositorio");
+                }
+            });
+            //Recorremos los commits que tiene el repositorio a borrar y los borramos
+            commits.forEach(y-> {
+                try {
+                    repoCommit.delete(y);
+                } catch (SQLException e) {
+                    System.err.println("No se ha podido borrar los commits de repositorio");
+                }
+            });
+
+            System.out.println("Eliminando repositorio con id: " + repositorio.getIdRepositorio());
+            String query = "DELETE FROM repositorio WHERE idRepositorio = ?";
+            DataBaseController db = DataBaseController.getInstance();
+            db.open();
+            db.delete(query, repositorio.getIdRepositorio());
+            db.close();
+        }
         return Optional.of(repositorio);
     }
 }

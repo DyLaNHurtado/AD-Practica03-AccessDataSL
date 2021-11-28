@@ -13,6 +13,7 @@ public class DepartamentoDTO {
     private String idDepartamento;
     private String nombre;
     private String idJefe;
+    private List<String> trabajadores;
     private Double presupuesto;
     private List<String> proyFinalizados;
     private List<String> proyDesarrollo;

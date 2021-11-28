@@ -3,13 +3,11 @@ package repository;
 import database.DataBaseController;
 import model.Departamento;
 import model.Programador;
+import model.Proyecto;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class RepoDepartamento implements CrudRepository<Departamento, String> {
     @Override
@@ -27,6 +25,7 @@ public class RepoDepartamento implements CrudRepository<Departamento, String> {
                             result.getString("idDepartamento"),
                             result.getString("nombre"),
                             result.getString("idJefe"),
+                            List.of(result.getString("trabajadores")),
                             result.getDouble("presupuesto"),
                             List.of(result.getString("proyFinalizados").split(";")),
                             List.of(result.getString("proyDesarrollo").split(";")),
@@ -52,6 +51,7 @@ public class RepoDepartamento implements CrudRepository<Departamento, String> {
                     result.getString("idDepartamento"),
                     result.getString("nombre"),
                     result.getString("idJefe"),
+                    List.of(result.getString("trabajadores")),
                     result.getDouble("presupuesto"),
                     List.of(result.getString("proyFinalizados").split(";")),
                     List.of(result.getString("proyDesarrollo").split(";")),
@@ -100,13 +100,94 @@ public class RepoDepartamento implements CrudRepository<Departamento, String> {
 
     @Override
     public Optional<Departamento> delete(Departamento departamento) throws SQLException {
-        System.out.println("Eliminando departamento con id: " + departamento.getIdDepartamento());
-        String query = "DELETE FROM departamento WHERE idDepartamento = ?";
-        DataBaseController db = DataBaseController.getInstance();
-        db.open();
-        db.delete(query, departamento.getIdDepartamento());
-        db.close();
+        RepoProgramador repoProgramador = new RepoProgramador();
+        RepoProyecto repoProyecto = new RepoProyecto();
+        if (repoProgramador.getByIdDepartamento(departamento.getIdDepartamento()).isPresent()
+                || repoProyecto.getByIdDepartamento(departamento.getIdDepartamento()).isPresent()) {
+            //meter condiciones de si tienen una id departamento asignada para programador asi
+            Programador programador = repoProgramador.getByIdDepartamento(departamento.getIdDepartamento()).get();
+            Proyecto proyecto = repoProyecto.getByIdDepartamento(departamento.getIdDepartamento()).get();
+            //cogemos su id actual de departamento
+            // (el que vamos a borrar)
+            programador.setIdDepartamento("");
+            repoProgramador.update(programador);
+            proyecto.setIdDepartamento("");
+            repoProyecto.update(proyecto);
+            //seteamos en (vacio) y lo updateamos
 
+            System.out.println("Eliminando departamento con id: " + departamento.getIdDepartamento());
+            String query = "DELETE FROM departamento WHERE idDepartamento = ?";
+            DataBaseController db = DataBaseController.getInstance();
+            db.open();
+            db.delete(query, departamento.getIdDepartamento());
+            db.close();
+        }
         return Optional.of(departamento);
     }
+
+    public Optional<Departamento> getByIdJefe(String id) throws SQLException {
+        System.out.println("Obteniendo departamento con idJefe: " + id);
+        //buscar id con % delante y % detras para coger solo id ya que está separada con ;
+        String query = "SELECT * FROM departamento WHERE idJefe = ? ";
+        DataBaseController db = DataBaseController.getInstance();
+        Departamento departamento = null;
+        db.open();
+        ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar departamento con ID " + id));
+        if (result.first()) {
+            departamento = new Departamento(
+                    result.getString("idDepartamento"),
+                    result.getString("nombre"),
+                    result.getString("idJefe"),
+                    List.of(result.getString("trabajadores")),
+                    result.getDouble("presupuesto"),
+                    List.of(result.getString("proyFinalizados").split(";")),
+                    List.of(result.getString("proyDesarrollo").split(";")),
+                    result.getDouble("presupuestoAnual"),
+                    List.of(result.getString("historialJefes").split(";"))
+            );
+        }
+        db.close();
+        return Optional.ofNullable(departamento);
+    }
+
+    // Operacion 1
+    public Optional<List<Object>> getDepartamentoInfo(String id) throws SQLException {
+        RepoProyecto repoProyecto = new RepoProyecto();
+        RepoProgramador repoProgramador = new RepoProgramador();
+        if (repoProyecto.getAllByIdDepartamento(id).isPresent()
+                || repoProgramador.getAllByIdDepartamento(id).isPresent()) {
+
+            List<Proyecto> proyectos = repoProyecto.getAllByIdDepartamento(id).get();
+            List<Programador> programadores = repoProgramador.getAllByIdDepartamento(id).get();
+
+
+            System.out.println("Obteniendo departamento con idDepartamento: " + id);
+            //buscar id con % delante y % detras para coger solo id ya que está separada con ;
+            String query = "SELECT * FROM departamento WHERE idDepartamento = ? ";
+            DataBaseController db = DataBaseController.getInstance();
+            Departamento departamento = null;
+            db.open();
+            ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar departamento con ID " + id));
+            if (result.first()) {
+                departamento = new Departamento(
+                        result.getString("idDepartamento"),
+                        result.getString("nombre"),
+                        result.getString("idJefe"),
+                        List.of(result.getString("trabajadores")),
+                        result.getDouble("presupuesto"),
+                        List.of(result.getString("proyFinalizados").split(";")),
+                        List.of(result.getString("proyDesarrollo").split(";")),
+                        result.getDouble("presupuestoAnual"),
+                        List.of(result.getString("historialJefes").split(";"))
+                );
+                db.close();
+            }
+            if (departamento != null) {
+                return Optional.of(List.of(departamento, proyectos, programadores));
+            }
+        }
+        System.out.println("No se ha encontrado departamento en getDepartamentoInfo");
+        return Optional.empty();
+    }
+
 }

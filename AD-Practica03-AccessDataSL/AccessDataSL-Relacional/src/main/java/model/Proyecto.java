@@ -22,4 +22,5 @@ public class Proyecto {
     private Date fechaFin;
     private List<String> tecnologias;
     private String idRepositorio;
+    private String idDepartamento;
 }

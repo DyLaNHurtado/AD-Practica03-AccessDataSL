@@ -18,6 +18,7 @@ public class ProyectoDTO {
     private Date fechaFin;
     private List<String> tecnologias;
     private String idRepositorio;
+    private String idDepartamento;
 
     // From/To JSON IMPLEMENTAR METODOS CUANDO PASEMOS A JSON
     public static CommitDTO fromJSON(String json) {

@@ -28,7 +28,7 @@ public class RepoIssue implements CrudRepository<Issue, String> {
                             result.getString("titulo"),
                             result.getString("texto"),
                             result.getDate("fecha"),
-                            List.of(result.getString(String.join(";", "programadores"))),
+                            List.of(result.getString(String.join(";","programadores"))),
                             result.getString("proyecto"),
                             result.getString("repositorio"),
                             result.getString("estado")
@@ -45,19 +45,18 @@ public class RepoIssue implements CrudRepository<Issue, String> {
         DataBaseController db = DataBaseController.getInstance();
         Issue issue = null;
         db.open();
-        ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar departamento con ID " + id));
+        ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar issue con ID " + id));
         if (result.first()) {
             issue = new Issue(
                     result.getString("idIssue"),
                     result.getString("titulo"),
                     result.getString("texto"),
                     result.getDate("fecha"),
-                    List.of(result.getString(String.join(";", "programadores"))),
+                    List.of(result.getString(String.join(";","programadores"))),
                     result.getString("proyecto"),
                     result.getString("repositorio"),
                     result.getString("estado")
-            );
-        }
+            );}
         db.close();
         return Optional.ofNullable(issue);
     }
@@ -70,7 +69,7 @@ public class RepoIssue implements CrudRepository<Issue, String> {
         db.open();
         db.insert(query, UUID.randomUUID(),
                         issue.getTitulo(), issue.getTexto(), issue.getFecha(),
-                        issue.getProgramadores(), issue.getProyecto(), issue.getRepositorio(),
+                        issue.getProgramadores(),issue.getProyecto(),issue.getRepositorio(),
                         issue.getEstado())
                 .orElseThrow(() -> new SQLException("Error insertar commit"));
 
@@ -86,7 +85,7 @@ public class RepoIssue implements CrudRepository<Issue, String> {
         db.open();
         db.update(query, issue.getIdIssue(),
                 issue.getTitulo(), issue.getTexto(), issue.getFecha(),
-                issue.getProgramadores(), issue.getProyecto(), issue.getRepositorio(),
+                issue.getProgramadores(),issue.getProyecto(),issue.getRepositorio(),
                 issue.getEstado());
         db.close();
 
@@ -104,4 +103,52 @@ public class RepoIssue implements CrudRepository<Issue, String> {
 
         return Optional.of(issue);
     }
+    public Optional<Issue> getByProyecto(String id) throws SQLException {
+        System.out.println("Obteniendo issues con proyecto: " + id);
+        String query = "SELECT * FROM issues WHERE proyecto = ?";
+        DataBaseController db = DataBaseController.getInstance();
+        Issue issue = null;
+        db.open();
+        ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar issue con proyecto " + id));
+        if (result.first()) {
+            issue = new Issue(
+                    result.getString("idIssue"),
+                    result.getString("titulo"),
+                    result.getString("texto"),
+                    result.getDate("fecha"),
+                    List.of(result.getString(String.join(";","programadores"))),
+                    result.getString("proyecto"),
+                    result.getString("repositorio"),
+                    result.getString("estado")
+            );}
+        db.close();
+        return Optional.ofNullable(issue);
+    }
+
+    public Optional<List<Issue>> getAllByRepositorio(String id) throws SQLException {
+        System.out.println("Obteniendo todos los issues");
+        String query = "SELECT * FROM issue WHERE repositorio = ?";
+        DataBaseController db = DataBaseController.getInstance();
+        ArrayList<Issue> list = null;
+        db.open();
+        ResultSet result = db.select(query,id).orElseThrow(() -> new SQLException("Error al consultar issues"));
+        list = new ArrayList<>();
+        while (result.next()) {
+            list.add(
+                    new Issue(
+                            result.getString("idIssue"),
+                            result.getString("titulo"),
+                            result.getString("texto"),
+                            result.getDate("fecha"),
+                            List.of(result.getString(String.join(";","programadores"))),
+                            result.getString("proyecto"),
+                            result.getString("repositorio"),
+                            result.getString("estado")
+                    ));
+        }
+        db.close();
+        return Optional.of(list);
+    }
+
 }
+
