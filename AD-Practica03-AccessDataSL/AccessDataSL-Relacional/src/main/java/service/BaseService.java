@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public abstract class BaseService<T,ID, R extends CrudRepository<T, ID>> {
+public abstract class BaseService<T, ID, R extends CrudRepository<T, ID>> {
 
     protected final R repository;
 

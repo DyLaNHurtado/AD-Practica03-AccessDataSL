@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RepoIssue implements CrudRepository<Issue, String>{
+public class RepoIssue implements CrudRepository<Issue, String> {
     @Override
     public Optional<List<Issue>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los issues");
@@ -28,7 +28,7 @@ public class RepoIssue implements CrudRepository<Issue, String>{
                             result.getString("titulo"),
                             result.getString("texto"),
                             result.getDate("fecha"),
-                            List.of(result.getString(String.join(";","programadores"))),
+                            List.of(result.getString(String.join(";", "programadores"))),
                             result.getString("proyecto"),
                             result.getString("repositorio"),
                             result.getString("estado")
@@ -52,11 +52,12 @@ public class RepoIssue implements CrudRepository<Issue, String>{
                     result.getString("titulo"),
                     result.getString("texto"),
                     result.getDate("fecha"),
-                    List.of(result.getString(String.join(";","programadores"))),
+                    List.of(result.getString(String.join(";", "programadores"))),
                     result.getString("proyecto"),
                     result.getString("repositorio"),
                     result.getString("estado")
-            );}
+            );
+        }
         db.close();
         return Optional.ofNullable(issue);
     }
@@ -69,7 +70,7 @@ public class RepoIssue implements CrudRepository<Issue, String>{
         db.open();
         db.insert(query, UUID.randomUUID(),
                         issue.getTitulo(), issue.getTexto(), issue.getFecha(),
-                        issue.getProgramadores(),issue.getProyecto(),issue.getRepositorio(),
+                        issue.getProgramadores(), issue.getProyecto(), issue.getRepositorio(),
                         issue.getEstado())
                 .orElseThrow(() -> new SQLException("Error insertar commit"));
 
@@ -85,7 +86,7 @@ public class RepoIssue implements CrudRepository<Issue, String>{
         db.open();
         db.update(query, issue.getIdIssue(),
                 issue.getTitulo(), issue.getTexto(), issue.getFecha(),
-                issue.getProgramadores(),issue.getProyecto(),issue.getRepositorio(),
+                issue.getProgramadores(), issue.getProyecto(), issue.getRepositorio(),
                 issue.getEstado());
         db.close();
 

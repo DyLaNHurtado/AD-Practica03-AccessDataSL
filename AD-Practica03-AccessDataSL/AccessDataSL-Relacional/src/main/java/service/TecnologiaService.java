@@ -1,13 +1,8 @@
 package service;
 
-import dto.CommitDTO;
 import dto.TecnologiaDTO;
-import jdk.jfr.Category;
-import mapper.CommitMapper;
 import mapper.TecnologiaMapper;
-import model.Commit;
 import model.Tecnologia;
-import repository.RepoCommit;
 import repository.RepoTecnologia;
 
 import java.sql.SQLException;
@@ -28,22 +23,63 @@ public class TecnologiaService extends BaseService<Tecnologia, String, RepoTecno
     }
 
     public Optional<TecnologiaDTO> getTecnologiaById(String id) throws SQLException {
-        return mapper.toDTO(this.getById(id).get());
+        if (this.getById(id).isPresent()) {
+            return mapper.toDTO(this.getById(id).get());
+        }
+        System.out.println("TecnologiaService -> " +
+                "No se ha encontrado el Tecnologia by id");
+        return Optional.empty();
     }
 
     public Optional<TecnologiaDTO> postTecnologia(TecnologiaDTO tecnologiaDTO) throws SQLException {
-        Optional<Tecnologia> res = this.save(mapper.fromDTO(tecnologiaDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(tecnologiaDTO).isPresent()) {
+            Optional<Tecnologia> res = this.save(mapper.fromDTO(tecnologiaDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("TecnologiaService -> " +
+                        "No se ha encontrado Tecnologia toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("TecnologiaService -> " +
+                    "No se ha encontrado Tecnologia fromDTO");
+            return Optional.empty();
+        }
     }
 
     public Optional<TecnologiaDTO> updateTecnologia(TecnologiaDTO tecnologiaDTO) throws SQLException {
-        Optional<Tecnologia> res = this.update(mapper.fromDTO(tecnologiaDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(tecnologiaDTO).isPresent()) {
+            Optional<Tecnologia> res = this.update(mapper.fromDTO(tecnologiaDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("TecnologiaService -> " +
+                        "No se ha encontrado Tecnologia toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("TecnologiaService -> " +
+                    "No se ha encontrado Tecnologia fromDTO");
+            return Optional.empty();
+        }
     }
 
     public Optional<TecnologiaDTO> deleteTecnologia(TecnologiaDTO tecnologiaDTO) throws SQLException {
-        Optional<Tecnologia> res = this.delete(mapper.fromDTO(tecnologiaDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(tecnologiaDTO).isPresent()) {
+            Optional<Tecnologia> res = this.delete(mapper.fromDTO(tecnologiaDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("TecnologiaService -> " +
+                        "No se ha encontrado Tecnologia toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("TecnologiaService -> " +
+                    "No se ha encontrado Tecnologia fromDTO");
+            return Optional.empty();
+        }
     }
 
 }

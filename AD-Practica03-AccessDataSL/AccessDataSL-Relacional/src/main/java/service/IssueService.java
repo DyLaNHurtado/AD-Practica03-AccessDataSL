@@ -23,21 +23,62 @@ public class IssueService extends BaseService<Issue, String, RepoIssue> {
     }
 
     public Optional<IssueDTO> getIssueById(String id) throws SQLException {
-        return mapper.toDTO(this.getById(id).get());
+        if (this.getById(id).isPresent()) {
+            return mapper.toDTO(this.getById(id).get());
+        }
+        System.out.println("IssueService -> " +
+                "No se ha encontrado el Issue by id");
+        return Optional.empty();
     }
 
     public Optional<IssueDTO> postIssue(IssueDTO issueDTO) throws SQLException {
-        Optional<Issue> res = this.save(mapper.fromDTO(issueDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(issueDTO).isPresent()) {
+            Optional<Issue> res = this.save(mapper.fromDTO(issueDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("IssueService -> " +
+                        "No se ha encontrado Issue toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("IssueService -> " +
+                    "No se ha encontrado Issue fromDTO");
+            return Optional.empty();
+        }
     }
 
     public Optional<IssueDTO> updateIssue(IssueDTO issueDTO) throws SQLException {
-        Optional<Issue> res = this.update(mapper.fromDTO(issueDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(issueDTO).isPresent()) {
+            Optional<Issue> res = this.update(mapper.fromDTO(issueDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("IssueService -> " +
+                        "No se ha encontrado Issue toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("IssueService -> " +
+                    "No se ha encontrado Issue fromDTO");
+            return Optional.empty();
+        }
     }
 
     public Optional<IssueDTO> deleteIssue(IssueDTO issueDTO) throws SQLException {
-        Optional<Issue> res = this.delete(mapper.fromDTO(issueDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(issueDTO).isPresent()) {
+            Optional<Issue> res = this.delete(mapper.fromDTO(issueDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("IssueService -> " +
+                        "No se ha encontrado Issue toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("IssueService -> " +
+                    "No se ha encontrado Issue fromDTO");
+            return Optional.empty();
+        }
     }
 }

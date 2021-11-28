@@ -23,21 +23,62 @@ public class CommitService extends BaseService<Commit, String, RepoCommit> {
     }
 
     public Optional<CommitDTO> getCommitById(String id) throws SQLException {
-        return mapper.toDTO(this.getById(id).get());
+        if (this.getById(id).isPresent()) {
+            return mapper.toDTO(this.getById(id).get());
+        }
+        System.out.println("CommitService -> " +
+                "No se ha encontrado el Commit by id");
+        return Optional.empty();
     }
 
     public Optional<CommitDTO> postCommit(CommitDTO commitDTO) throws SQLException {
-        Optional<Commit> res = this.save(mapper.fromDTO(commitDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(commitDTO).isPresent()) {
+            Optional<Commit> res = this.save(mapper.fromDTO(commitDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("CommitService -> " +
+                        "No se ha encontrado Commit toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("CommitService -> " +
+                    "No se ha encontrado Commit fromDTO");
+            return Optional.empty();
+        }
     }
 
     public Optional<CommitDTO> updateCommit(CommitDTO commitDTO) throws SQLException {
-        Optional<Commit> res = this.update(mapper.fromDTO(commitDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(commitDTO).isPresent()) {
+            Optional<Commit> res = this.update(mapper.fromDTO(commitDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("CommitService -> " +
+                        "No se ha encontrado Commit toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("CommitService -> " +
+                    "No se ha encontrado Commit fromDTO");
+            return Optional.empty();
+        }
     }
 
     public Optional<CommitDTO> deleteCommit(CommitDTO commitDTO) throws SQLException {
-        Optional<Commit> res = this.delete(mapper.fromDTO(commitDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(commitDTO).isPresent()) {
+            Optional<Commit> res = this.delete(mapper.fromDTO(commitDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("CommitService -> " +
+                        "No se ha encontrado Commit toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("CommitService -> " +
+                    "No se ha encontrado Commit fromDTO");
+            return Optional.empty();
+        }
     }
 }

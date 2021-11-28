@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RepoTecnologia implements CrudRepository<Tecnologia, String>{
+public class RepoTecnologia implements CrudRepository<Tecnologia, String> {
     @Override
     public Optional<List<Tecnologia>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los tecnologia");
@@ -46,7 +46,8 @@ public class RepoTecnologia implements CrudRepository<Tecnologia, String>{
             tecnologia = new Tecnologia(
                     result.getString("idTecnologia"),
                     result.getString("nombre")
-            );}
+            );
+        }
         db.close();
         return Optional.ofNullable(tecnologia);
     }
@@ -58,7 +59,7 @@ public class RepoTecnologia implements CrudRepository<Tecnologia, String>{
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.insert(query, UUID.randomUUID().toString(),
-                tecnologia.getNombre())
+                        tecnologia.getNombre())
                 .orElseThrow(() -> new SQLException("Error insertar tecnologia"));
 
 

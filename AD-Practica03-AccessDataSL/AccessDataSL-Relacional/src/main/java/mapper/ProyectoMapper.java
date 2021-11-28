@@ -1,10 +1,8 @@
 package mapper;
 
 import dto.ProyectoDTO;
-import model.Commit;
 import model.Proyecto;
 
-import java.util.List;
 import java.util.Optional;
 
 public class ProyectoMapper extends BaseMapper<Proyecto, ProyectoDTO> {

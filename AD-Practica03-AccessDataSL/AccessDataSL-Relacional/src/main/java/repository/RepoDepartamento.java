@@ -57,7 +57,8 @@ public class RepoDepartamento implements CrudRepository<Departamento, String> {
                     List.of(result.getString("proyDesarrollo").split(";")),
                     result.getDouble("presupuestoAnual"),
                     List.of(result.getString("historialJefes").split(";"))
-            );}
+            );
+        }
         db.close();
         return Optional.ofNullable(departamento);
     }

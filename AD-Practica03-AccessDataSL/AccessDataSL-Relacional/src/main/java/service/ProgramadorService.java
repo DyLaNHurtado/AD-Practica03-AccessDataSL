@@ -28,21 +28,62 @@ public class ProgramadorService extends BaseService<Programador, String, RepoPro
     }
 
     public Optional<ProgramadorDTO> getProgramadorById(String id) throws SQLException {
-        return mapper.toDTO(this.getById(id).get());
+        if (this.getById(id).isPresent()) {
+            return mapper.toDTO(this.getById(id).get());
+        }
+        System.out.println("ProgramadorService -> " +
+                "No se ha encontrado el Programador by id");
+        return Optional.empty();
     }
 
     public Optional<ProgramadorDTO> postProgramador(ProgramadorDTO programadorDTO) throws SQLException {
-        Optional<Programador> res = this.save(mapper.fromDTO(programadorDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(programadorDTO).isPresent()) {
+            Optional<Programador> res = this.save(mapper.fromDTO(programadorDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("ProgramadorService -> " +
+                        "No se ha encontrado Programador toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("ProgramadorService -> " +
+                    "No se ha encontrado Programador fromDTO");
+            return Optional.empty();
+        }
     }
 
     public Optional<ProgramadorDTO> updateProgramador(ProgramadorDTO programadorDTO) throws SQLException {
-        Optional<Programador> res = this.update(mapper.fromDTO(programadorDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(programadorDTO).isPresent()) {
+            Optional<Programador> res = this.update(mapper.fromDTO(programadorDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("ProgramadorService -> " +
+                        "No se ha encontrado Programador toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("ProgramadorService -> " +
+                    "No se ha encontrado Programador fromDTO");
+            return Optional.empty();
+        }
     }
 
     public Optional<ProgramadorDTO> deleteProgramador(ProgramadorDTO programadorDTO) throws SQLException {
-        Optional<Programador> res = this.delete(mapper.fromDTO(programadorDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(programadorDTO).isPresent()) {
+            Optional<Programador> res = this.delete(mapper.fromDTO(programadorDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("ProgramadorService -> " +
+                        "No se ha encontrado Programador toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("ProgramadorService -> " +
+                    "No se ha encontrado Programador fromDTO");
+            return Optional.empty();
+        }
     }
 }

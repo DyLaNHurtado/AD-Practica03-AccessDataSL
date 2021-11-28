@@ -18,24 +18,24 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         String query = "SELECT * FROM programador";
         DataBaseController db = DataBaseController.getInstance();
         ArrayList<Programador> list = null;
-            db.open();
-            ResultSet result = db.select(query).orElseThrow(() -> new SQLException("Error al consultar registros de programadores"));
-            list = new ArrayList<>();
-            while (result.next()) {
-                list.add(
-                        new Programador(
-                                result.getString("idProgramador"),
-                                result.getString("nombre"),
-                                result.getDate("fechaAlta"),
-                                result.getString("idDepartamento"),
-                                List.of(result.getString("proyectosParticipa").split(";")),
-                                List.of(result.getString("commits").split(";")),
-                                List.of(result.getString("issues").split(";")),
-                                List.of(result.getString("tecnologias").split(";")),
-                                result.getDouble("salario"))
-                );
-            }
-            db.close();
+        db.open();
+        ResultSet result = db.select(query).orElseThrow(() -> new SQLException("Error al consultar registros de programadores"));
+        list = new ArrayList<>();
+        while (result.next()) {
+            list.add(
+                    new Programador(
+                            result.getString("idProgramador"),
+                            result.getString("nombre"),
+                            result.getDate("fechaAlta"),
+                            result.getString("idDepartamento"),
+                            List.of(result.getString("proyectosParticipa").split(";")),
+                            List.of(result.getString("commits").split(";")),
+                            List.of(result.getString("issues").split(";")),
+                            List.of(result.getString("tecnologias").split(";")),
+                            result.getDouble("salario"))
+            );
+        }
+        db.close();
         return Optional.of(list);
     }
 
@@ -45,21 +45,22 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         String query = "SELECT * FROM programador WHERE idProgramador = ?";
         DataBaseController db = DataBaseController.getInstance();
         Programador programador = null;
-            db.open();
-            ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar programadores con ID " + id));
-            if (result.first()) {
-                programador = new Programador(
-                        result.getString("idProgramador"),
-                        result.getString("nombre"),
-                        result.getDate("fechaAlta"),
-                        result.getString("idDepartamento"),
-                        List.of(result.getString("proyectosParticipa").split(";")),
-                        List.of(result.getString("commits").split(";")),
-                        List.of(result.getString("issues").split(";")),
-                        List.of(result.getString("tecnologias").split(";")),
-                        result.getDouble("salario")
-                );}
-                db.close();
+        db.open();
+        ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar programadores con ID " + id));
+        if (result.first()) {
+            programador = new Programador(
+                    result.getString("idProgramador"),
+                    result.getString("nombre"),
+                    result.getDate("fechaAlta"),
+                    result.getString("idDepartamento"),
+                    List.of(result.getString("proyectosParticipa").split(";")),
+                    List.of(result.getString("commits").split(";")),
+                    List.of(result.getString("issues").split(";")),
+                    List.of(result.getString("tecnologias").split(";")),
+                    result.getDouble("salario")
+            );
+        }
+        db.close();
         return Optional.ofNullable(programador);
     }
 

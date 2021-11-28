@@ -14,7 +14,8 @@ public abstract class BaseMapper<T, DTO> {
 
     public Optional<List<Optional<DTO>>> toDTO(Optional<List<T>> items) {
         //falta dto
-        return Optional.of(items.get().stream().map(this::toDTO).collect(Collectors.toList()));
+            return Optional.of(items.get().stream().map(this::toDTO).collect(Collectors.toList()));
+
     }
 
     public abstract Optional<DTO> toDTO(T item);

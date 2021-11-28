@@ -24,25 +24,67 @@ public class DepartamentoService extends BaseService<Departamento, String, RepoD
     }
 
     public Optional<List<Optional<DepartamentoDTO>>> getAllDepartamentos() throws SQLException {
+
         return mapper.toDTO(this.getAll());
     }
 
     public Optional<DepartamentoDTO> getDepartamentoById(String id) throws SQLException {
-        return mapper.toDTO(this.getById(id).get());
+        if (this.getById(id).isPresent()) {
+            return mapper.toDTO(this.getById(id).get());
+        }
+        System.out.println("DepartamentoService-> " +
+                "No se ha encontrado el Departamento by id");
+        return Optional.empty();
     }
 
     public Optional<DepartamentoDTO> postDepartamento(DepartamentoDTO departamentoDTO) throws SQLException {
-        Optional<Departamento> res = this.save(mapper.fromDTO(departamentoDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(departamentoDTO).isPresent()) {
+            Optional<Departamento> res = this.save(mapper.fromDTO(departamentoDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("DepartamentoService -> " +
+                        "No se ha encontrado Commit toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("DepartamentoService -> " +
+                    "No se ha encontrado Commit fromDTO");
+            return Optional.empty();
+        }
     }
 
     public Optional<DepartamentoDTO> updateDepartamento(DepartamentoDTO departamentoDTO) throws SQLException {
-        Optional<Departamento> res = this.update(mapper.fromDTO(departamentoDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(departamentoDTO).isPresent()) {
+            Optional<Departamento> res = this.update(mapper.fromDTO(departamentoDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("DepartamentoService -> " +
+                        "No se ha encontrado Commit toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("DepartamentoService -> " +
+                    "No se ha encontrado Commit fromDTO");
+            return Optional.empty();
+        }
     }
 
     public Optional<DepartamentoDTO> deleteDepartamento(DepartamentoDTO departamentoDTO) throws SQLException {
-        Optional<Departamento> res = this.delete(mapper.fromDTO(departamentoDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(departamentoDTO).isPresent()) {
+            Optional<Departamento> res = this.delete(mapper.fromDTO(departamentoDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("DepartamentoService -> " +
+                        "No se ha encontrado Commit toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("DepartamentoService -> " +
+                    "No se ha encontrado Commit fromDTO");
+            return Optional.empty();
+        }
     }
 }

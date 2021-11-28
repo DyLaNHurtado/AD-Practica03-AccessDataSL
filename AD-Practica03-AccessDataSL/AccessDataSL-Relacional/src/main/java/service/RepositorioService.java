@@ -27,21 +27,62 @@ public class RepositorioService extends BaseService<Repositorio, String, RepoRep
     }
 
     public Optional<RepositorioDTO> getRepositorioById(String id) throws SQLException {
-        return mapper.toDTO(this.getById(id).get());
+        if (this.getById(id).isPresent()) {
+            return mapper.toDTO(this.getById(id).get());
+        }
+        System.out.println("RepositorioService -> " +
+                "No se ha encontrado el Repositorio by id");
+        return Optional.empty();
     }
 
     public Optional<RepositorioDTO> postRepositorio(RepositorioDTO repositorioDTO) throws SQLException {
-        Optional<Repositorio> res = this.save(mapper.fromDTO(repositorioDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(repositorioDTO).isPresent()) {
+            Optional<Repositorio> res = this.save(mapper.fromDTO(repositorioDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("RepositorioService -> " +
+                        "No se ha encontrado Repositorio toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("RepositorioService -> " +
+                    "No se ha encontrado Repositorio fromDTO");
+            return Optional.empty();
+        }
     }
 
     public Optional<RepositorioDTO> updateRepositorio(RepositorioDTO repositorioDTO) throws SQLException {
-        Optional<Repositorio> res = this.update(mapper.fromDTO(repositorioDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(repositorioDTO).isPresent()) {
+            Optional<Repositorio> res = this.update(mapper.fromDTO(repositorioDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("RepositorioService -> " +
+                        "No se ha encontrado Repositorio toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("RepositorioService -> " +
+                    "No se ha encontrado Repositorio fromDTO");
+            return Optional.empty();
+        }
     }
 
     public Optional<RepositorioDTO> deleteRepositorio(RepositorioDTO repositorioDTO) throws SQLException {
-        Optional<Repositorio> res = this.delete(mapper.fromDTO(repositorioDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(repositorioDTO).isPresent()) {
+            Optional<Repositorio> res = this.delete(mapper.fromDTO(repositorioDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("RepositorioService -> " +
+                        "No se ha encontrado Repositorio toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("RepositorioService -> " +
+                    "No se ha encontrado Repositorio fromDTO");
+            return Optional.empty();
+        }
     }
 }

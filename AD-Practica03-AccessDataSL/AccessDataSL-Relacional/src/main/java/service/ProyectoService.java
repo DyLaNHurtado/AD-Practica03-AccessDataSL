@@ -28,21 +28,62 @@ public class ProyectoService extends BaseService<Proyecto, String, RepoProyecto>
     }
 
     public Optional<ProyectoDTO> getProyectoById(String id) throws SQLException {
-        return mapper.toDTO(this.getById(id).get());
+        if (this.getById(id).isPresent()) {
+            return mapper.toDTO(this.getById(id).get());
+        }
+        System.out.println("ProyectoService -> " +
+                "No se ha encontrado el Proyecto by id");
+        return Optional.empty();
     }
 
     public Optional<ProyectoDTO> postProyecto(ProyectoDTO proyectoDTO) throws SQLException {
-        Optional<Proyecto> res = this.save(mapper.fromDTO(proyectoDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(proyectoDTO).isPresent()) {
+            Optional<Proyecto> res = this.save(mapper.fromDTO(proyectoDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("ProyectoService -> " +
+                        "No se ha encontrado Proyecto toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("ProyectoService -> " +
+                    "No se ha encontrado Proyecto fromDTO");
+            return Optional.empty();
+        }
     }
 
     public Optional<ProyectoDTO> updateProyecto(ProyectoDTO proyectoDTO) throws SQLException {
-        Optional<Proyecto> res = this.update(mapper.fromDTO(proyectoDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(proyectoDTO).isPresent()) {
+            Optional<Proyecto> res = this.update(mapper.fromDTO(proyectoDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("ProyectoService -> " +
+                        "No se ha encontrado Proyecto toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("ProyectoService -> " +
+                    "No se ha encontrado Proyecto fromDTO");
+            return Optional.empty();
+        }
     }
 
     public Optional<ProyectoDTO> deleteProyecto(ProyectoDTO proyectoDTO) throws SQLException {
-        Optional<Proyecto> res = this.delete(mapper.fromDTO(proyectoDTO).get());
-        return mapper.toDTO(res.get());
+        if (mapper.fromDTO(proyectoDTO).isPresent()) {
+            Optional<Proyecto> res = this.delete(mapper.fromDTO(proyectoDTO).get());
+            if (res.isPresent()) {
+                return mapper.toDTO(res.get());
+            } else {
+                System.out.println("ProyectoService -> " +
+                        "No se ha encontrado Proyecto toDTO");
+                return Optional.empty();
+            }
+        } else {
+            System.out.println("ProyectoService -> " +
+                    "No se ha encontrado Proyecto fromDTO");
+            return Optional.empty();
+        }
     }
 }

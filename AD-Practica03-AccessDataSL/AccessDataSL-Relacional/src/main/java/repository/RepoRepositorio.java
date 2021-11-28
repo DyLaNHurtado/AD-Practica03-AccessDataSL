@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RepoRepositorio implements CrudRepository<Repositorio, String>{
+public class RepoRepositorio implements CrudRepository<Repositorio, String> {
     @Override
     public Optional<List<Repositorio>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los repositorios");
@@ -52,7 +52,8 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String>{
                     result.getString("idProyecto"),
                     List.of(result.getString("commits").split(";")),
                     List.of(result.getString("issues").split(";"))
-            );}
+            );
+        }
         db.close();
         return Optional.ofNullable(repositorio);
     }

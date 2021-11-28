@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RepoCommit implements CrudRepository<Commit, String>{
+public class RepoCommit implements CrudRepository<Commit, String> {
     @Override
     public Optional<List<Commit>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los commits");
@@ -56,7 +56,8 @@ public class RepoCommit implements CrudRepository<Commit, String>{
                     result.getString("proyecto"),
                     result.getString("autor"),
                     result.getString("issue")
-            );}
+            );
+        }
         db.close();
         return Optional.ofNullable(commit);
     }
@@ -69,7 +70,7 @@ public class RepoCommit implements CrudRepository<Commit, String>{
         db.open();
         db.insert(query, UUID.randomUUID().toString(),
                         commit.getTitulo(), commit.getTexto(), commit.getFecha(),
-                        commit.getRepositorio(),commit.getProyecto(),commit.getAutor(),
+                        commit.getRepositorio(), commit.getProyecto(), commit.getAutor(),
                         commit.getIssue())
                 .orElseThrow(() -> new SQLException("Error insertar commit"));
 
@@ -85,7 +86,7 @@ public class RepoCommit implements CrudRepository<Commit, String>{
         db.open();
         db.update(query, commit.getIdCommit(),
                 commit.getTitulo(), commit.getTexto(), commit.getFecha(),
-                commit.getRepositorio(),commit.getProyecto(),commit.getAutor(),
+                commit.getRepositorio(), commit.getProyecto(), commit.getAutor(),
                 commit.getIssue());
         db.close();
 

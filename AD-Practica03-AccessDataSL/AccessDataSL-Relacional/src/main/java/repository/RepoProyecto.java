@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class RepoProyecto implements CrudRepository<Proyecto, String>{
+public class RepoProyecto implements CrudRepository<Proyecto, String> {
     @Override
     public Optional<List<Proyecto>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los proyecto");
@@ -56,7 +56,8 @@ public class RepoProyecto implements CrudRepository<Proyecto, String>{
                     result.getDate("fechaFin"),
                     List.of(result.getString("tecnologias").split(";")),
                     result.getString("idRepositorio")
-            );}
+            );
+        }
         db.close();
         return Optional.ofNullable(proyecto);
     }
@@ -69,7 +70,7 @@ public class RepoProyecto implements CrudRepository<Proyecto, String>{
         db.open();
         db.insert(query, UUID.randomUUID().toString(),
                         proyecto.getNombre(), proyecto.getIdJefe(), proyecto.getPresupuesto(),
-                        proyecto.getFechaInicio(),proyecto.getFechaFin(),
+                        proyecto.getFechaInicio(), proyecto.getFechaFin(),
                         String.join(";", proyecto.getTecnologias()),
                         proyecto.getIdRepositorio())
                 .orElseThrow(() -> new SQLException("Error insertar proyecto"));
@@ -86,7 +87,7 @@ public class RepoProyecto implements CrudRepository<Proyecto, String>{
         db.open();
         db.update(query, proyecto.getIdProyecto(),
                 proyecto.getNombre(), proyecto.getIdJefe(), proyecto.getPresupuesto(),
-                proyecto.getFechaInicio(),proyecto.getFechaFin(),
+                proyecto.getFechaInicio(), proyecto.getFechaFin(),
                 String.join(";", proyecto.getTecnologias()),
                 proyecto.getIdRepositorio());
         db.close();
