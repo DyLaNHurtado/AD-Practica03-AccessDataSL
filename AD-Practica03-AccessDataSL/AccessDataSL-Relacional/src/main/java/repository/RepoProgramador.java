@@ -1,13 +1,12 @@
 package repository;
 
 import database.DataBaseController;
-import model.Departamento;
-import model.Programador;
-import model.Proyecto;
+import model.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RepoProgramador implements CrudRepository<Programador, String> {
 
@@ -16,7 +15,7 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         System.out.println("Obteniendo todos los programadores");
         String query = "SELECT * FROM programador";
         DataBaseController db = DataBaseController.getInstance();
-        ArrayList<Programador> list = null;
+        ArrayList<Programador> list;
         db.open();
         ResultSet result = db.select(query).orElseThrow(() -> new SQLException("Error al consultar registros de programadores"));
         list = new ArrayList<>();
@@ -179,7 +178,7 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         System.out.println("Obteniendo todos los programadores por idDepartamento: "+ id);
         String query = "SELECT * FROM programador WHERE idDepartamento = ?";
         DataBaseController db = DataBaseController.getInstance();
-        ArrayList<Programador> list = null;
+        ArrayList<Programador> list;
         db.open();
         ResultSet result = db.select(query,id).orElseThrow(() -> new SQLException("Error al consultar registros de programadores por idDepartamento"));
         list = new ArrayList<>();
@@ -199,5 +198,55 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         }
         db.close();
         return Optional.of(list);
+    }
+    //Operacion 3
+    //Programadores de un proyecto ordenados por número de commits.
+    public Optional<List<Programador>> getAllByProyectoSortByCommits(String idProyecto) throws SQLException {
+        if(this.getAll().isPresent()){
+        return Optional.of(this.getAll().get().stream().filter(x->x.getProyectosParticipa().contains(idProyecto)).sorted(Comparator.comparingInt(x->x.getCommits().size())).collect(Collectors.toList()));
+
+    }
+        System.out.println("No se han encontrado programadores en getAllByProyectoSortByCommits");
+        return Optional.empty();
+    }
+
+    //Operacion 4
+    // Programadores con su productividad completa: proyectos , commits
+    //(información completa) e issues asignadas (información completa).
+    public Optional<List<Object>> getAllProgramadorInfo() throws SQLException {
+        RepoCommit repoCommit = new RepoCommit();
+        RepoIssue repoIssue = new RepoIssue();
+        RepoProyecto repoProyecto = new RepoProyecto();
+
+        if (this.getAll().isPresent()) {
+            List<Programador> programadores = this.getAll().get();
+            List<Commit> commits = new ArrayList<>();
+            List<Issue> issues = new ArrayList<>();
+            List<Proyecto> proyectos= new ArrayList<>();
+            programadores.forEach(x->{
+                try {
+                    if(repoCommit.getAllByAuthor(x.getIdProgramador()).isPresent()
+                            && repoIssue.getAllByAuthor(x.getIdProgramador()).isPresent()
+                            && repoProyecto.getByIdJefe(x.getIdProgramador()).isPresent()) {
+
+                        commits.addAll(repoCommit.getAllByAuthor(x.getIdProgramador()).get());
+                        issues.addAll(repoIssue.getAllByAuthor(x.getIdProgramador()).get());
+                        proyectos.add(repoProyecto.getByIdJefe(x.getIdProgramador()).get());
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    System.err.println("error al añadir todo a la lista en metodo getProgramadorInfo");
+                }
+
+            });
+
+
+
+
+            return Optional.of(List.of(programadores, proyectos ,commits, issues));
+        }
+
+        System.out.println("No se ha encontrado programadores en getAllProgramadorInfo");
+        return Optional.empty();
     }
 }

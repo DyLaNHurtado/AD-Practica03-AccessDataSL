@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class RepoIssue implements CrudRepository<Issue, String> {
     @Override
@@ -149,6 +150,24 @@ public class RepoIssue implements CrudRepository<Issue, String> {
         db.close();
         return Optional.of(list);
     }
+    public Optional<List<Issue>> getAllByAuthor(String id) throws SQLException {
+        if(this.getAll().isPresent()) {
+            return Optional.of(this.getAll().get().stream().filter(x -> x.getProgramadores().contains(id)).collect(Collectors.toList()));
+        }
+        System.out.println("No se han encontrado issues en getAllByAuthor");
+        return Optional.empty();
+    }
+
+    //Operacion 2
+    //Listado de issues abiertas por proyecto que no se hayan consolidado en commits
+
+        public Optional<List<Issue>> getAllAbiertasByProyecto(String idProyecto) throws SQLException {
+            if(this.getAll().isPresent()) {
+                return Optional.of(this.getAll().get().stream().filter(x -> x.getProyecto().equals(idProyecto) && x.getEstado().equals("pendiente")).collect(Collectors.toList()));
+            }
+            System.out.println("No se han encontrado issues en getAllAbiertasByProyecto");
+            return Optional.empty();
+        }
 
 }
 

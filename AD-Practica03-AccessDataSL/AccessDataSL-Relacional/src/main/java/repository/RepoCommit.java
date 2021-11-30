@@ -7,10 +7,8 @@ import model.Issue;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class RepoCommit implements CrudRepository<Commit, String> {
     @Override
@@ -138,6 +136,14 @@ public class RepoCommit implements CrudRepository<Commit, String> {
         }
         db.close();
         return Optional.of(list);
+    }
+
+    public Optional<List<Commit>> getAllByAuthor(String id) throws SQLException {
+        if(this.getAll().isPresent()) {
+            return Optional.of(this.getAll().get().stream().filter(x -> Objects.equals(x.getAutor(), id)).collect(Collectors.toList()));
+        }
+        System.out.println("No se han encontrado commits en getAllByAuthor");
+        return Optional.empty();
     }
 
 }

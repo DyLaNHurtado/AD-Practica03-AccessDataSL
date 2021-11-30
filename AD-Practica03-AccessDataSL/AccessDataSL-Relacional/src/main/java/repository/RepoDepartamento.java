@@ -150,42 +150,25 @@ public class RepoDepartamento implements CrudRepository<Departamento, String> {
         return Optional.ofNullable(departamento);
     }
 
-    // Operacion 1
+    // Operacion 1:
+    //Obtener de un departamento, los proyectos (información completa) y trabajadores
+    //asociados con sus datos completos
     public Optional<List<Object>> getDepartamentoInfo(String id) throws SQLException {
         RepoProyecto repoProyecto = new RepoProyecto();
         RepoProgramador repoProgramador = new RepoProgramador();
+
         if (repoProyecto.getAllByIdDepartamento(id).isPresent()
-                || repoProgramador.getAllByIdDepartamento(id).isPresent()) {
+                && repoProgramador.getAllByIdDepartamento(id).isPresent()
+                && this.getById(id).isPresent()) {
 
             List<Proyecto> proyectos = repoProyecto.getAllByIdDepartamento(id).get();
             List<Programador> programadores = repoProgramador.getAllByIdDepartamento(id).get();
 
+            Departamento departamento = this.getById(id).get();
 
-            System.out.println("Obteniendo departamento con idDepartamento: " + id);
-            //buscar id con % delante y % detras para coger solo id ya que está separada con ;
-            String query = "SELECT * FROM departamento WHERE idDepartamento = ? ";
-            DataBaseController db = DataBaseController.getInstance();
-            Departamento departamento = null;
-            db.open();
-            ResultSet result = db.select(query, id).orElseThrow(() -> new SQLException("Error al consultar departamento con ID " + id));
-            if (result.first()) {
-                departamento = new Departamento(
-                        result.getString("idDepartamento"),
-                        result.getString("nombre"),
-                        result.getString("idJefe"),
-                        List.of(result.getString("trabajadores")),
-                        result.getDouble("presupuesto"),
-                        List.of(result.getString("proyFinalizados").split(";")),
-                        List.of(result.getString("proyDesarrollo").split(";")),
-                        result.getDouble("presupuestoAnual"),
-                        List.of(result.getString("historialJefes").split(";"))
-                );
-                db.close();
-            }
-            if (departamento != null) {
-                return Optional.of(List.of(departamento, proyectos, programadores));
-            }
+            return Optional.of(List.of(departamento, proyectos, programadores));
         }
+
         System.out.println("No se ha encontrado departamento en getDepartamentoInfo");
         return Optional.empty();
     }
