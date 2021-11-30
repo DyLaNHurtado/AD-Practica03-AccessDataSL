@@ -106,7 +106,7 @@ public class RepoIssue implements CrudRepository<Issue, String> {
     }
     public Optional<Issue> getByProyecto(String id) throws SQLException {
         System.out.println("Obteniendo issues con proyecto: " + id);
-        String query = "SELECT * FROM issues WHERE proyecto = ?";
+        String query = "SELECT * FROM issue WHERE proyecto = ?";
         DataBaseController db = DataBaseController.getInstance();
         Issue issue = null;
         db.open();

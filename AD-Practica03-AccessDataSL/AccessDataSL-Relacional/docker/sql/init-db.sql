@@ -113,12 +113,7 @@ CREATE TABLE `departamento`
     `proyDesarrollo`   varchar(255) NOT NULL,
     `presupuestoAnual` double       NOT NULL,
     `historialJefes`   varchar(255) NOT NULL,
-    PRIMARY KEY (`idDepartamento`),
-    CONSTRAINT `departamento_ibfk_1` FOREIGN KEY (`idJefe`) REFERENCES `programador` (`idProgramador`),
-    CONSTRAINT `departamento_ibfk_2` FOREIGN KEY (`trabajadores`) REFERENCES `programador` (`idProgramador`),
-    CONSTRAINT `departamento_ibfk_3` FOREIGN KEY (`proyFinalizados`) REFERENCES `proyecto` (`idProyecto`),
-    CONSTRAINT `departamento_ibfk_4` FOREIGN KEY (`proyDesarrollo`) REFERENCES `proyecto` (`idProyecto`),
-    CONSTRAINT `departamento_ibfk_5` FOREIGN KEY (`historialJefes`) REFERENCES `programador` (`idProgramador`)
+    PRIMARY KEY (`idDepartamento`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
@@ -154,9 +149,7 @@ CREATE TABLE `issue`
     `proyecto`      varchar(36)  NOT NULL,
     `repositorio`   varchar(36)  NOT NULL,
     `estado`        varchar(10)  NOT NULL,
-    PRIMARY KEY (`idIssue`),
-    KEY `programadores` (`programadores`),
-    CONSTRAINT `issue_ibfk_1` FOREIGN KEY (`programadores`) REFERENCES `programador` (`idProgramador`)
+    PRIMARY KEY (`idIssue`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
@@ -252,49 +245,49 @@ CREATE TABLE `proyecto`
     `fechaFin`      date         NOT NULL,
     `tecnologias`   varchar(255) NOT NULL,
     `idRepositorio` varchar(36)  NOT NULL,
+    `idDepartamento` varchar(36)  NOT NULL,
     PRIMARY KEY (`idProyecto`),
-    KEY `idJefe` (`idJefe`),
-    CONSTRAINT `proyecto_ibfk_1` FOREIGN KEY (`idJefe`) REFERENCES `programador` (`idProgramador`)
+    KEY `idJefe` (`idJefe`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 INSERT INTO `proyecto` (`idProyecto`, `nombre`,
                         `idJefe`, `presupuesto`,
                         `fechaInicio`, `fechaFin`,
-                        `tecnologias`, `idRepositorio`)
+                        `tecnologias`, `idRepositorio`,`idDepartamento`)
 VALUES ('81ee1211-760c-493d-968a-380e6af67363', 'Power Project',
         '1376acc9-79a9-4bf1-9084-c82e9a07f432', 8000,
         '2017-05-02', '2019-11-20',
-        '20bcca63-7b60-4a43-bb10-4c9735587d16', 'f64c5364-faa7-41b7-bca9-3b27f95d8fa8'),
+        '20bcca63-7b60-4a43-bb10-4c9735587d16', 'f64c5364-faa7-41b7-bca9-3b27f95d8fa8','1e89386d-be37-4930-b6ae-bcba6c9917b4'),
 
        ('f89062d9-ba34-40a4-b6af-a21a0dc093be', 'HR Project',
         '1376acc9-79a9-4bf1-9084-c82e9a07f432', 3000,
         '2019-09-22', '',
         '20bcca63-7b60-4a43-bb10-4c9735587d16;4f119f1b-7ccf-49f4-b56f-fdace8589b1c',
-        'f1174508-8659-4654-82ce-af2704a152de'),
+        'f1174508-8659-4654-82ce-af2704a152de','1e89386d-be37-4930-b6ae-bcba6c9917b4'),
 
        ('10f2db5c-a0c3-40ec-a1bf-a95cab6bebdf', 'DF Project',
         '1376acc9-79a9-4bf1-9084-c82e9a07f432', 1000,
         '2009-02-22', '',
         '20bcca63-7b60-4a43-bb10-4c9735587d16',
-        '4863c6e9-606f-42bb-aaff-6e961de25054'),
+        '4863c6e9-606f-42bb-aaff-6e961de25054','1e89386d-be37-4930-b6ae-bcba6c9917b4'),
 
        ('2d1d1422-fede-4e27-8883-3ffdb1be1a7c', 'CD Project',
         '1376acc9-79a9-4bf1-9084-c82e9a07f432', 8500,
         '2009-02-22', '',
         'cb231a1d-ffc8-4a64-b090-1334f5f4f740',
-        'ed38db33-7fd3-4242-91e4-a411d5fe3b1f'),
+        'ed38db33-7fd3-4242-91e4-a411d5fe3b1f','2d1d1422-fede-4e27-8883-3ffdb1be1a7c'),
 
        ('233b5d47-0ced-4e6f-8982-b2f95b6b25b9', 'Logic Project',
         '1376acc9-79a9-4bf1-9084-c82e9a07f432', 5000,
         '2008-05-23', '',
         '20bcca63-7b60-4a43-bb10-4c9735587d16;4f119f1b-7ccf-49f4-b56f-fdace8589b1c',
-        '2a11c73f-faa0-4346-82ac-fe6115ed4d6a'),
+        '2a11c73f-faa0-4346-82ac-fe6115ed4d6a','512a0695-3294-4c2c-86d9-4babd4485fa8'),
 
        ('3730b275-3ed2-4d77-8ff4-f5ce82ea98ea', 'JS Project',
         '1376acc9-79a9-4bf1-9084-c82e9a07f432', 7100,
         '1999-05-23', '2004-09-15',
-        '20bcca63-7b60-4a43-bb10-4c9735587d16', 'eecd0485-8cc8-426b-81a5-ddffe5d83a67');
+        '20bcca63-7b60-4a43-bb10-4c9735587d16', 'eecd0485-8cc8-426b-81a5-ddffe5d83a67','512a0695-3294-4c2c-86d9-4babd4485fa8');
 
 
 

@@ -70,7 +70,8 @@ public class RepoDepartamento implements CrudRepository<Departamento, String> {
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.insert(query, UUID.randomUUID().toString(),
-                        departamento.getNombre(), departamento.getIdJefe(), departamento.getPresupuesto(),
+                        departamento.getNombre(), departamento.getIdJefe(),
+                        String.join(";", departamento.getTrabajadores()), departamento.getPresupuesto(),
                         String.join(";", departamento.getProyFinalizados()),
                         String.join(";", departamento.getProyDesarrollo()),
                         departamento.getPresupuestoAnual(),
@@ -88,7 +89,8 @@ public class RepoDepartamento implements CrudRepository<Departamento, String> {
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.update(query, departamento.getIdDepartamento(),
-                departamento.getNombre(), departamento.getIdJefe(), departamento.getPresupuesto(),
+                departamento.getNombre(), departamento.getIdJefe(),
+                String.join(";", departamento.getTrabajadores()), departamento.getPresupuesto(),
                 String.join(";", departamento.getProyFinalizados()),
                 String.join(";", departamento.getProyDesarrollo()),
                 departamento.getPresupuestoAnual(),

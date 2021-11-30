@@ -93,9 +93,9 @@ public class RepoCommit implements CrudRepository<Commit, String> {
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.update(query, commit.getIdCommit(),
-                commit.getTitulo(), commit.getTexto(), commit.getFecha(),
+                commit.getTitulo(), commit.getTexto(), commit.getFecha().getTime(),
                 commit.getRepositorio(), commit.getProyecto(), commit.getAutor(),
-                commit.getIssue());
+                commit.getIssue(),commit.getIdCommit());
         db.close();
 
         return Optional.of(commit);

@@ -2,15 +2,14 @@ package repository;
 
 import database.DataBaseController;
 import model.Departamento;
+import model.Programador;
 import model.Proyecto;
 import model.Repositorio;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class RepoProyecto implements CrudRepository<Proyecto, String> {
     @Override
@@ -202,4 +201,37 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
         db.close();
         return Optional.of(list);
     }
+
+    //Operacion 5
+
+    //Obtener los tres proyectos más caros en base a su presupuesto asignado y el salario
+    //de cada trabajador que participa
+
+    public Optional<List<Object>> getProyectosMasCaros() throws SQLException {
+
+        RepoProgramador repoProgramador = new RepoProgramador();
+
+        List<Double> salarios= new ArrayList<>();
+        if (this.getAll().isPresent()) {
+            List<Proyecto> proyCaros =this.getAll().get().stream().sorted(Comparator.comparingDouble(Proyecto::getPresupuesto).reversed()).limit(3).collect(Collectors.toList());
+            proyCaros.forEach(x->{
+                try {
+                    if (repoProgramador.getAllByProyectoSortByCommits(x.getIdProyecto()).isPresent()) {
+                        List<Programador> programadores = repoProgramador.getAllByProyectoSortByCommits(x.getIdProyecto()).get();
+
+                        programadores.forEach(p -> {
+                            salarios.add(p.getSalario());
+                        });}
+
+                    } catch(SQLException e){
+                        e.printStackTrace();
+                    }
+            });
+
+            return Optional.of(List.of(proyCaros,salarios));
+        }
+        System.out.println("No se han encontrado los tres proyectos mas caros y salarios getProyectosMasCaros");
+        return Optional.empty();
+    }
+
 }
