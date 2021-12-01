@@ -3,6 +3,7 @@ package repository;
 import database.DataBaseController;
 import model.*;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -70,7 +71,7 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.insert(query, UUID.randomUUID().toString(),
-                        programador.getNombre(), programador.getFechaAlta(), programador.getIdDepartamento(),
+                        programador.getNombre(), new Date(programador.getFechaAlta().getTime()), programador.getIdDepartamento(),
                         String.join(";", programador.getProyectosParticipa()),
                         String.join(";", programador.getCommits()),
                         String.join(";", programador.getIssues()),
@@ -104,11 +105,11 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
 
 
         System.out.println("Actualizando programador con id: " + programador.getIdProgramador());
-        String query = "UPDATE programador SET idProgramador= ?, nombre = ?, fechaAlta = ?, departamento = ?, proyectosParticipa = ?, commits = ? ,issues = ?, tecnologias = ?, salario = ? WHERE idProgramador = ?";
+        String query = "UPDATE programador SET idProgramador= ?, nombre = ?, fechaAlta = ?, idDepartamento = ?, proyectosParticipa = ?, commits = ? ,issues = ?, tecnologias = ?, salario = ? WHERE idProgramador = ?";
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.update(query, programador.getIdProgramador(), programador.getNombre(),
-                programador.getFechaAlta(), programador.getIdProgramador(),
+                new Date(programador.getFechaAlta().getTime()), programador.getIdDepartamento(),
                 String.join(";", programador.getProyectosParticipa()),
                 String.join(";", programador.getCommits()),
                 String.join(";", programador.getIssues()),

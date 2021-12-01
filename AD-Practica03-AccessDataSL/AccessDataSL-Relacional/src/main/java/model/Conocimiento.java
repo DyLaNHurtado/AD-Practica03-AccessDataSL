@@ -12,6 +12,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 public class Conocimiento {
+    private String idConocimiento;
     private String idProgramador;
     private List<String> tecnologias;
 }

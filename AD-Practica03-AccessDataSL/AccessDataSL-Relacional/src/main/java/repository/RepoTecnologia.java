@@ -68,11 +68,11 @@ public class RepoTecnologia implements CrudRepository<Tecnologia, String> {
     @Override
     public Optional<Tecnologia> update(Tecnologia tecnologia) throws SQLException {
         System.out.println("Actualizando tecnologia con id: " + tecnologia.getIdTecnologia());
-        String query = "UPDATE departamento SET idTecnologia = ?, nombre = ? WHERE idTecnologia = ?";
+        String query = "UPDATE tecnologia SET idTecnologia = ?, nombre = ? WHERE idTecnologia = ?";
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.update(query, tecnologia.getIdTecnologia(),
-                tecnologia.getNombre());
+                tecnologia.getNombre(),tecnologia.getIdTecnologia());
         db.close();
 
         return Optional.of(tecnologia);

@@ -4,6 +4,7 @@ import database.DataBaseController;
 import model.Commit;
 import model.Issue;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class RepoIssue implements CrudRepository<Issue, String> {
     @Override
     public Optional<Issue> getById(String id) throws SQLException {
         System.out.println("Obteniendo issues con id: " + id);
-        String query = "SELECT * FROM issues WHERE idIssue = ?";
+        String query = "SELECT * FROM issue WHERE idIssue = ?";
         DataBaseController db = DataBaseController.getInstance();
         Issue issue = null;
         db.open();
@@ -64,15 +65,15 @@ public class RepoIssue implements CrudRepository<Issue, String> {
 
     @Override
     public Optional<Issue> save(Issue issue) throws SQLException {
-        System.out.println("Insertando commit");
-        String query = "INSERT INTO commit VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        System.out.println("Insertando issue");
+        String query = "INSERT INTO issue VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         DataBaseController db = DataBaseController.getInstance();
         db.open();
-        db.insert(query, UUID.randomUUID(),
-                        issue.getTitulo(), issue.getTexto(), issue.getFecha(),
-                        issue.getProgramadores(),issue.getProyecto(),issue.getRepositorio(),
+        db.insert(query, UUID.randomUUID().toString(),
+                        issue.getTitulo(), issue.getTexto(), new Date(issue.getFecha().getTime()),
+                String.join(";", issue.getProgramadores()),issue.getProyecto(),issue.getRepositorio(),
                         issue.getEstado())
-                .orElseThrow(() -> new SQLException("Error insertar commit"));
+                .orElseThrow(() -> new SQLException("Error insertar issue"));
 
 
         return Optional.of(issue);
@@ -81,13 +82,13 @@ public class RepoIssue implements CrudRepository<Issue, String> {
     @Override
     public Optional<Issue> update(Issue issue) throws SQLException {
         System.out.println("Actualizando issue con id: " + issue.getIdIssue());
-        String query = "UPDATE commit SET idIssue= ?, titulo = ?, texto = ?, fecha = ?, programadores = ?, proyecto = ? ,repositorio = ?, estado = ? WHERE idIssue = ?";
+        String query = "UPDATE issue SET idIssue= ?, titulo = ?, texto = ?, fecha = ?, programadores = ?, proyecto = ? ,repositorio = ?, estado = ? WHERE idIssue = ?";
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.update(query, issue.getIdIssue(),
-                issue.getTitulo(), issue.getTexto(), issue.getFecha(),
-                issue.getProgramadores(),issue.getProyecto(),issue.getRepositorio(),
-                issue.getEstado());
+                issue.getTitulo(), issue.getTexto(), issue.getFecha().getTime(),
+                String.join(";", issue.getProgramadores()),issue.getProyecto(),issue.getRepositorio(),
+                issue.getEstado(),issue.getIdIssue());
         db.close();
 
         return Optional.of(issue);

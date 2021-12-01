@@ -2,7 +2,6 @@ package repository;
 
 import database.DataBaseController;
 import model.Commit;
-import model.Departamento;
 import model.Issue;
 
 import java.sql.ResultSet;

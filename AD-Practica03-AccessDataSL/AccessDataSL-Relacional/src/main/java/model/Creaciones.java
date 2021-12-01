@@ -13,6 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 
 public class Creaciones {
+    private String idCreaciones;
     private String idIssue;
     private String idProgramador;
 }

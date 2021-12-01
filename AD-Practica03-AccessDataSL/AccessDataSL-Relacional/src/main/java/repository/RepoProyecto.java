@@ -8,6 +8,7 @@ import model.Repositorio;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Date;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -78,7 +79,7 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
                 db.open();
                 db.insert(query, UUID.randomUUID().toString(),
                                 proyecto.getNombre(), proyecto.getIdJefe(), proyecto.getPresupuesto(),
-                                proyecto.getFechaInicio(), proyecto.getFechaFin(),
+                                new Date(proyecto.getFechaInicio().getTime()), new Date(proyecto.getFechaFin().getTime()),
                                 String.join(";", proyecto.getTecnologias()),
                                 proyecto.getIdRepositorio())
                         .orElseThrow(() -> new SQLException("Error insertar proyecto"));

@@ -3,6 +3,7 @@ package repository;
 import database.DataBaseController;
 import model.*;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String> {
             list.add(
                     new Repositorio(
                             result.getString("idRepositorio"),
-                            result.getDate("fechaCreacion"),
                             result.getString("idProyecto"),
+                            result.getDate("fechaCreacion"),
                             List.of(result.getString("commits").split(";")),
                             List.of(result.getString("issues").split(";"))
 
@@ -46,8 +47,8 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String> {
         if (result.first()) {
             repositorio = new Repositorio(
                     result.getString("idRepositorio"),
-                    result.getDate("fechaCreacion"),
                     result.getString("idProyecto"),
+                    result.getDate("fechaCreacion"),
                     List.of(result.getString("commits").split(";")),
                     List.of(result.getString("issues").split(";"))
             );}
@@ -62,7 +63,7 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String> {
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.insert(query, UUID.randomUUID().toString(),
-                        repositorio.getFechaCreacion(), repositorio.getIdProyecto(),
+                        repositorio.getIdProyecto(),new Date(repositorio.getFechaCreacion().getTime()),
                         String.join(";", repositorio.getCommits()),
                         String.join(";", repositorio.getIssues()))
                 .orElseThrow(() -> new SQLException("Error insertar repositorio"));
@@ -78,9 +79,9 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String> {
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.update(query, repositorio.getIdRepositorio(),
-                repositorio.getFechaCreacion(), repositorio.getIdProyecto(),
+                new Date(repositorio.getFechaCreacion().getTime()), repositorio.getIdProyecto(),
                 String.join(";", repositorio.getCommits()),
-                String.join(";", repositorio.getIssues()));
+                String.join(";", repositorio.getIssues()),repositorio.getIdProyecto());
         db.close();
 
         return Optional.of(repositorio);

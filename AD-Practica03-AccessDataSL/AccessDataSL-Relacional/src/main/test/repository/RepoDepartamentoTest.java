@@ -67,7 +67,7 @@ class RepoDepartamentoTest {
     @Test
     @Order(4)
     void update() throws SQLException {
-        Departamento departamento =new Departamento("","1","1",List.of(""),0.0,List.of(""),List.of(""),0.0,List.of(""));
+        Departamento departamento =new Departamento("","","",List.of(""),0.0,List.of(""),List.of(""),0.0,List.of(""));
         Optional<Departamento> departamentoOptional  = repoDepartamento.update(departamento);
         Assertions.assertEquals(departamentoOptional.orElse(null),departamento);
     }
@@ -75,7 +75,7 @@ class RepoDepartamentoTest {
     @Test
     @Order(5)
     void delete() throws SQLException {
-        Departamento departamento =new Departamento("","1","1",List.of(""),0.0,List.of(""),List.of(""),0.0,List.of(""));
+        Departamento departamento =new Departamento("","","",List.of(""),0.0,List.of(""),List.of(""),0.0,List.of(""));
         Optional<Departamento> departamentoOptional  = repoDepartamento.delete(departamento);
         Assertions.assertEquals(departamentoOptional.orElse(null),departamento);
     }

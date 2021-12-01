@@ -12,8 +12,8 @@ public class RepositorioMapper extends BaseMapper<Repositorio, RepositorioDTO> {
     public Optional<Repositorio> fromDTO(RepositorioDTO item) {
         return Optional.ofNullable(Repositorio.builder()
                 .idRepositorio(item.getIdRepositorio())
-                .fechaCreacion(item.getFechaCreacion())
                 .idProyecto(item.getIdProyecto())
+                .fechaCreacion(item.getFechaCreacion())
                 .commits(item.getCommits())
                 .issues(item.getIssues())
                 .build());
@@ -23,8 +23,8 @@ public class RepositorioMapper extends BaseMapper<Repositorio, RepositorioDTO> {
     public Optional<RepositorioDTO> toDTO(Repositorio item) {
         return Optional.ofNullable(RepositorioDTO.builder()
                 .idRepositorio(item.getIdRepositorio())
-                .fechaCreacion(item.getFechaCreacion())
                 .idProyecto(item.getIdProyecto())
+                .fechaCreacion(item.getFechaCreacion())
                 .commits(item.getCommits())
                 .issues(item.getIssues())
                 .build());
