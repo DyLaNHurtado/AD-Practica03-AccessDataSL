@@ -13,6 +13,11 @@ import java.util.UUID;
 @Data
 @Builder
 @AllArgsConstructor
+/**
+ * @author Dylan Hurtado y Javier González
+ * @version 02/09/21 - 1.0
+ * clase programador
+ */
 
 public class Programador {
     private String idProgramador;

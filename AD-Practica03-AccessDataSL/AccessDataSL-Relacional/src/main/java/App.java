@@ -1,5 +1,11 @@
 import utils.ApplicationProperties;
 
+/**
+ * Main que presentA las properties y empieza a mover la fachada.
+ * @see Facade
+ * @author Dylan Hurtado y Javier González
+ * @version 02/09/21 - 1.0
+ */
 public class App {
     public static void main(String[] args) {
         ApplicationProperties properties = new ApplicationProperties();

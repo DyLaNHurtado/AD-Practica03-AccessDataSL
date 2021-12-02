@@ -21,11 +21,19 @@ public class RepositorioService extends BaseService<Repositorio, String, RepoRep
     public RepositorioService(RepoRepositorio repository) {
         super(repository);
     }
-
+    /**
+     * Coger todos los repositorios
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<List<Optional<RepositorioDTO>>> getAllRepositorios() throws SQLException {
         return mapper.toDTO(this.getAll());
     }
-
+    /**
+     * Coger todos los repositorios por id
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<RepositorioDTO> getRepositorioById(String id) throws SQLException {
         if (this.getById(id).isPresent()) {
             return mapper.toDTO(this.getById(id).get());
@@ -34,7 +42,11 @@ public class RepositorioService extends BaseService<Repositorio, String, RepoRep
                 "No se ha encontrado el Repositorio by id");
         return Optional.empty();
     }
-
+    /**
+     * Postear un repositorio
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<RepositorioDTO> postRepositorio(RepositorioDTO repositorioDTO) throws SQLException {
         if (mapper.fromDTO(repositorioDTO).isPresent()) {
             Optional<Repositorio> res = this.save(mapper.fromDTO(repositorioDTO).get());
@@ -51,7 +63,11 @@ public class RepositorioService extends BaseService<Repositorio, String, RepoRep
             return Optional.empty();
         }
     }
-
+    /**
+     * Updatear un repositorio
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<RepositorioDTO> updateRepositorio(RepositorioDTO repositorioDTO) throws SQLException {
         if (mapper.fromDTO(repositorioDTO).isPresent()) {
             Optional<Repositorio> res = this.update(mapper.fromDTO(repositorioDTO).get());
@@ -68,7 +84,11 @@ public class RepositorioService extends BaseService<Repositorio, String, RepoRep
             return Optional.empty();
         }
     }
-
+    /**
+     * Deletear un repositorio
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<RepositorioDTO> deleteRepositorio(RepositorioDTO repositorioDTO) throws SQLException {
         if (mapper.fromDTO(repositorioDTO).isPresent()) {
             Optional<Repositorio> res = this.delete(mapper.fromDTO(repositorioDTO).get());

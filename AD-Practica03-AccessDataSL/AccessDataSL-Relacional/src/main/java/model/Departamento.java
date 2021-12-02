@@ -11,6 +11,11 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @Builder
+/**
+ * @author Dylan Hurtado y Javier González
+ * @version 02/09/21 - 1.0
+ * clase departamento
+ */
 
 public class Departamento {
     private String idDepartamento;

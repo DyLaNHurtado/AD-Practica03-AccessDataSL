@@ -13,6 +13,11 @@ import java.util.stream.Collectors;
 
 public class RepoIssue implements CrudRepository<Issue, String> {
     @Override
+    /**
+     * Coger todos los issues
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<List<Issue>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los issues");
         String query = "SELECT * FROM issue";
@@ -37,7 +42,11 @@ public class RepoIssue implements CrudRepository<Issue, String> {
         db.close();
         return Optional.of(list);
     }
-
+    /**
+     * Coger los issues por id
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Issue> getById(String id) throws SQLException {
         System.out.println("Obteniendo issues con id: " + id);
@@ -60,7 +69,11 @@ public class RepoIssue implements CrudRepository<Issue, String> {
         db.close();
         return Optional.ofNullable(issue);
     }
-
+    /**
+     * Guardar un issue
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Issue> save(Issue issue) throws SQLException {
         System.out.println("Insertando issue");
@@ -76,7 +89,11 @@ public class RepoIssue implements CrudRepository<Issue, String> {
 
         return Optional.of(issue);
     }
-
+    /**
+     * Updatear un issue
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Issue> update(Issue issue) throws SQLException {
         System.out.println("Actualizando issue con id: " + issue.getIdIssue());
@@ -91,7 +108,11 @@ public class RepoIssue implements CrudRepository<Issue, String> {
 
         return Optional.of(issue);
     }
-
+    /**
+     * Borrar un issue
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Issue> delete(Issue issue) throws SQLException {
         System.out.println("Eliminando issue con id: " + issue.getIdIssue());
@@ -103,6 +124,11 @@ public class RepoIssue implements CrudRepository<Issue, String> {
 
         return Optional.of(issue);
     }
+    /**
+     * Coger issues por proyecto concreto
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<Issue> getByProyecto(String id) throws SQLException {
         System.out.println("Obteniendo issues con proyecto: " + id);
         String query = "SELECT * FROM issue WHERE proyecto = ?";
@@ -124,7 +150,11 @@ public class RepoIssue implements CrudRepository<Issue, String> {
         db.close();
         return Optional.ofNullable(issue);
     }
-
+    /**
+     * Coger todos los issues por id de un repositorio
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<List<Issue>> getAllByRepositorio(String id) throws SQLException {
         System.out.println("Obteniendo todos los issues");
         String query = "SELECT * FROM issue WHERE repositorio = ?";
@@ -149,6 +179,11 @@ public class RepoIssue implements CrudRepository<Issue, String> {
         db.close();
         return Optional.of(list);
     }
+    /**
+     * Coger todos los issues por autor
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<List<Issue>> getAllByAuthor(String id) throws SQLException {
         if(this.getAll().isPresent()) {
             return Optional.of(this.getAll().get().stream().filter(x -> x.getProgramadores().contains(id)).collect(Collectors.toList()));
@@ -156,10 +191,12 @@ public class RepoIssue implements CrudRepository<Issue, String> {
         System.out.println("No se han encontrado issues en getAllByAuthor");
         return Optional.empty();
     }
-
-    //Operacion 2
-    //Listado de issues abiertas por proyecto que no se hayan consolidado en commits
-
+    /**
+     * Operacion 2
+     * Listado de issues abiertas por proyecto que no se hayan consolidado en commits
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
         public Optional<List<Issue>> getAllAbiertasByProyecto(String idProyecto) throws SQLException {
             if(this.getAll().isPresent()) {
                 return Optional.of(this.getAll().get().stream().filter(x -> x.getProyecto().equals(idProyecto) && x.getEstado().equals("pendiente")).collect(Collectors.toList()));

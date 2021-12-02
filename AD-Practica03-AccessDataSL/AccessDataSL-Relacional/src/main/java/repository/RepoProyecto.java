@@ -12,6 +12,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class RepoProyecto implements CrudRepository<Proyecto, String> {
+    /**
+     * Coger todos los proyectos
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<List<Proyecto>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los proyecto");
@@ -37,7 +42,11 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
         db.close();
         return Optional.of(list);
     }
-
+    /**
+     * Coger todos por id
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Proyecto> getById(String id) throws SQLException {
         System.out.println("Obteniendo proyecto con id: " + id);
@@ -61,7 +70,11 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
         db.close();
         return Optional.ofNullable(proyecto);
     }
-
+    /**
+     * Guardar proyecto
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Proyecto> save(Proyecto proyecto) throws SQLException {
         //Comprobacion y restricciones
@@ -87,7 +100,11 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
 
         return Optional.of(proyecto);
     }
-
+    /**
+     * Updatear proyecto
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Proyecto> update(Proyecto proyecto) throws SQLException {
         //Comprobacion y restricciones
@@ -112,6 +129,11 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
         return Optional.of(proyecto);
     }
 
+    /**
+     * Borrar proyecto
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Proyecto> delete(Proyecto proyecto) throws SQLException {
 
@@ -130,7 +152,11 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
         }
         return Optional.of(proyecto);
     }
-
+    /**
+     * Coger proyecto con un id jefe asignado
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<Proyecto> getByIdJefe(String id) throws SQLException {
         System.out.println("Obteniendo proyecto con idJefe: " + id);
         String query = "SELECT * FROM proyecto WHERE idJefe = ?";
@@ -153,7 +179,11 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
         db.close();
         return Optional.ofNullable(proyecto);
     }
-
+    /**
+     * Coger proyectos con un id de departamento encargado
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<Proyecto> getByIdDepartamento(String id) throws SQLException {
         System.out.println("Obteniendo id de Departamento: " + id);
         String query = "SELECT * FROM proyecto WHERE idDepartamento = ?";
@@ -176,7 +206,11 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
         db.close();
         return Optional.ofNullable(proyecto);
     }
-
+    /**
+     * Coger TODOS los proyectos por un id de departamento asignado
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<List<Proyecto>> getAllByIdDepartamento(String id) throws SQLException {
         System.out.println("Obteniendo todos los proyecto");
         String query = "SELECT * FROM proyecto WHERE idDepartamento = ?";
@@ -201,11 +235,12 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
         db.close();
         return Optional.of(list);
     }
-
-    //Operacion 5
-
-    //Obtener los tres proyectos más caros en base a su presupuesto asignado y el salario
-    //de cada trabajador que participa
+    /**
+     * Operacion 5
+     * Obtener los tres proyectos más caros en base a su presupuesto asignado y el salario de cada trabajador que participa
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
 
     public Optional<List<Object>> getProyectosMasCaros() throws SQLException {
 

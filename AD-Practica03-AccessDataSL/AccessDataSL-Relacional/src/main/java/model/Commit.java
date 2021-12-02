@@ -15,6 +15,11 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 
+/**
+ * @author Dylan Hurtado y Javier González
+ * @version 02/09/21 - 1.0
+ * @return
+ */
 public class Commit {
     private String idCommit;
     private String titulo;

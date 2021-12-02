@@ -17,11 +17,19 @@ public class TecnologiaService extends BaseService<Tecnologia, String, RepoTecno
     public TecnologiaService(RepoTecnologia repository) {
         super(repository);
     }
-
+    /**
+     * Coger todos las tecnologias
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<List<Optional<TecnologiaDTO>>> getAllTecnologias() throws SQLException {
         return mapper.toDTO(this.getAll());
     }
-
+    /**
+     * Coger todas las tecnologias por id
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<TecnologiaDTO> getTecnologiaById(String id) throws SQLException {
         if (this.getById(id).isPresent()) {
             return mapper.toDTO(this.getById(id).get());
@@ -30,7 +38,11 @@ public class TecnologiaService extends BaseService<Tecnologia, String, RepoTecno
                 "No se ha encontrado el Tecnologia by id");
         return Optional.empty();
     }
-
+    /**
+     * Postear una tecnologia
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<TecnologiaDTO> postTecnologia(TecnologiaDTO tecnologiaDTO) throws SQLException {
         if (mapper.fromDTO(tecnologiaDTO).isPresent()) {
             Optional<Tecnologia> res = this.save(mapper.fromDTO(tecnologiaDTO).get());
@@ -47,7 +59,11 @@ public class TecnologiaService extends BaseService<Tecnologia, String, RepoTecno
             return Optional.empty();
         }
     }
-
+    /**
+     * Updatear una tecnologia
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<TecnologiaDTO> updateTecnologia(TecnologiaDTO tecnologiaDTO) throws SQLException {
         if (mapper.fromDTO(tecnologiaDTO).isPresent()) {
             Optional<Tecnologia> res = this.update(mapper.fromDTO(tecnologiaDTO).get());
@@ -64,7 +80,11 @@ public class TecnologiaService extends BaseService<Tecnologia, String, RepoTecno
             return Optional.empty();
         }
     }
-
+    /**
+     * Deletear una tecnologia
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<TecnologiaDTO> deleteTecnologia(TecnologiaDTO tecnologiaDTO) throws SQLException {
         if (mapper.fromDTO(tecnologiaDTO).isPresent()) {
             Optional<Tecnologia> res = this.delete(mapper.fromDTO(tecnologiaDTO).get());
