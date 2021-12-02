@@ -17,7 +17,7 @@ import java.util.UUID;
 public class Repositorio {
     private String idRepositorio;
     private String idProyecto;
-    private Date fechaCreacion;
+    private LocalDate fechaCreacion;
     private List<String> commits;
     private List<String> issues;
 }

@@ -25,7 +25,7 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
                     new Programador(
                             result.getString("idProgramador"),
                             result.getString("nombre"),
-                            result.getDate("fechaAlta"),
+                            result.getDate("fechaAlta").toLocalDate(),
                             result.getString("idDepartamento"),
                             List.of(result.getString("proyectosParticipa").split(";")),
                             List.of(result.getString("commits").split(";")),
@@ -50,7 +50,7 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
             programador = new Programador(
                     result.getString("idProgramador"),
                     result.getString("nombre"),
-                    result.getDate("fechaAlta"),
+                    result.getDate("fechaAlta").toLocalDate(),
                     result.getString("idDepartamento"),
                     List.of(result.getString("proyectosParticipa").split(";")),
                     List.of(result.getString("commits").split(";")),
@@ -71,7 +71,7 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.insert(query, UUID.randomUUID().toString(),
-                        programador.getNombre(), new Date(programador.getFechaAlta().getTime()), programador.getIdDepartamento(),
+                        programador.getNombre(), programador.getFechaAlta(), programador.getIdDepartamento(),
                         String.join(";", programador.getProyectosParticipa()),
                         String.join(";", programador.getCommits()),
                         String.join(";", programador.getIssues()),
@@ -109,7 +109,7 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.update(query, programador.getIdProgramador(), programador.getNombre(),
-                new Date(programador.getFechaAlta().getTime()), programador.getIdDepartamento(),
+               programador.getFechaAlta(), programador.getIdDepartamento(),
                 String.join(";", programador.getProyectosParticipa()),
                 String.join(";", programador.getCommits()),
                 String.join(";", programador.getIssues()),
@@ -162,7 +162,7 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
             programador = new Programador(
                     result.getString("idProgramador"),
                     result.getString("nombre"),
-                    result.getDate("fechaAlta"),
+                    result.getDate("fechaAlta").toLocalDate(),
                     result.getString("idDepartamento"),
                     List.of(result.getString("proyectosParticipa").split(";")),
                     List.of(result.getString("commits").split(";")),
@@ -188,7 +188,7 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
                     new Programador(
                             result.getString("idProgramador"),
                             result.getString("nombre"),
-                            result.getDate("fechaAlta"),
+                            result.getDate("fechaAlta").toLocalDate(),
                             result.getString("idDepartamento"),
                             List.of(result.getString("proyectosParticipa").split(";")),
                             List.of(result.getString("commits").split(";")),
@@ -214,7 +214,7 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
     //Operacion 4
     // Programadores con su productividad completa: proyectos , commits
     //(información completa) e issues asignadas (información completa).
-    public Optional<List<Object>> getAllProgramadorInfo() throws SQLException {
+    public Optional<List<Object>> getAllProgramadoresInfo() throws SQLException {
         RepoCommit repoCommit = new RepoCommit();
         RepoIssue repoIssue = new RepoIssue();
         RepoProyecto repoProyecto = new RepoProyecto();

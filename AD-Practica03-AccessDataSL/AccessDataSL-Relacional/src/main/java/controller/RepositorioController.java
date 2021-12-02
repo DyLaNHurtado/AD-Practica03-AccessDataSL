@@ -4,14 +4,20 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.ProgramadorDTO;
+import dto.ProyectoDTO;
 import dto.RepositorioDTO;
 import repository.RepoRepositorio;
 import service.RepositorioService;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.sql.SQLException;
 
 public class RepositorioController {
     private static RepositorioController controller = null;
+    private Marshaller marshaller;
 
     // Mi Servicio unido al repositorio
     private final RepositorioService repositorioService;
@@ -77,6 +83,63 @@ public class RepositorioController {
         } catch (SQLException e) {
             System.err.println("Error RepositorioController en deleteRepositorio: " + e.getMessage());
             return "Error RepositorioController en deleteRepositorio: " + e.getMessage();
+        }
+    }
+
+    //XML
+    public void getAllRepositoriosXML() {
+        try {
+            // Vamos a devolver el XML de los commits
+            JAXBContext jaxbContext = JAXBContext.newInstance(RepositorioDTO.class);
+            marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(repositorioService.getAllRepositorios(), System.out);
+        } catch (SQLException | JAXBException e) {
+            System.err.println("Error RepositorioController en getAllRepositoriosXML: " + e.getMessage());
+        }
+    }
+
+    public void getRepositorioByIdXML(String id) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(RepositorioDTO.class);
+            marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(repositorioService.getRepositorioById(id), System.out);
+        } catch (SQLException | JAXBException e) {
+            System.err.println("Error RepositorioController en getRepositorioByIdXML: " + e.getMessage());
+        }
+    }
+
+    public void postRepositorioXML(RepositorioDTO repositorioDTO) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(RepositorioDTO.class);
+            marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(repositorioService.postRepositorio(repositorioDTO), System.out);
+        } catch (SQLException | JAXBException e) {
+            System.err.println("Error RepositorioController en postRepositorioXML: " + e.getMessage());
+        }
+    }
+
+    public void updateRepositorioXML(RepositorioDTO repositorioDTO) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(RepositorioDTO.class);
+            marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(repositorioService.updateRepositorio(repositorioDTO), System.out);
+        } catch (SQLException | JAXBException e) {
+            System.err.println("Error RepositorioController en updateRepositorioXML: " + e.getMessage());
+        }
+    }
+
+    public void deleteRepositorioXML(RepositorioDTO repositorioDTO) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(RepositorioDTO.class);
+            marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(repositorioService.deleteRepositorio(repositorioDTO), System.out);
+        } catch (SQLException | JAXBException e) {
+            System.err.println("Error RepositorioController en deleteRepositorioXML: " + e.getMessage());
         }
     }
 }

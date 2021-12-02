@@ -5,17 +5,21 @@ import com.google.gson.GsonBuilder;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 @Data
 @Builder
+
+@XmlRootElement(name="proyecto")
 public class ProyectoDTO {
     private String idProyecto;
     private String nombre;
     private String idJefe;
     private Double presupuesto;
-    private Date fechaInicio;
-    private Date fechaFin;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
     private List<String> tecnologias;
     private String idRepositorio;
     private String idDepartamento;

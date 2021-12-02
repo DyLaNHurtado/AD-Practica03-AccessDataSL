@@ -3,10 +3,14 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dto.CommitDTO;
 import dto.DepartamentoDTO;
 import repository.RepoDepartamento;
 import service.DepartamentoService;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.sql.SQLException;
 
 public class DepartamentoController {
@@ -14,6 +18,7 @@ public class DepartamentoController {
 
     // Mi Servicio unido al repositorio
     private final DepartamentoService departamentoService;
+    private Marshaller marshaller;
 
     // Implementamos nuestro Singleton para el controlador
     private DepartamentoController(DepartamentoService departamentoService) {
@@ -76,6 +81,84 @@ public class DepartamentoController {
         } catch (SQLException e) {
             System.err.println("Error DepartamentoController en deleteDepartamento: " + e.getMessage());
             return "Error DepartamentoController en deleteDepartamento: " + e.getMessage();
+        }
+    }
+
+    public String getDepartamentoFullInfoJSON(DepartamentoDTO departamentoDTO) {
+        try {
+            final Gson prettyGson = new GsonBuilder().setPrettyPrinting().create();
+            return prettyGson.toJson(departamentoService.getDepartamentoFullInfo(departamentoDTO.getIdDepartamento()));
+        } catch (SQLException e) {
+            System.err.println("Error DepartamentoController en getDepartamentoFullInfo: " + e.getMessage());
+            return "Error DepartamentoController en getDepartamentoFullInfo: " + e.getMessage();
+        }
+    }
+
+    //XML
+    public void getAllDepartamentosXML() {
+        try {
+            // Vamos a devolver el XML de los commits
+            JAXBContext jaxbContext = JAXBContext.newInstance(DepartamentoDTO.class);
+            marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(departamentoService.getAllDepartamentos(), System.out);
+        } catch (SQLException | JAXBException e) {
+            System.err.println("Error CommitController en getAll: " + e.getMessage());
+        }
+    }
+
+    public void getDepartamentoByIdXML(String id) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(DepartamentoDTO.class);
+            marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(departamentoService.getDepartamentoById(id), System.out);
+        } catch (SQLException | JAXBException e) {
+            System.err.println("Error CommitController en getCommitById: " + e.getMessage());
+        }
+    }
+
+    public void postDepartamentoXML(DepartamentoDTO departamentoDTO) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(DepartamentoDTO.class);
+            marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(departamentoService.postDepartamento(departamentoDTO), System.out);
+        } catch (SQLException | JAXBException e) {
+            System.err.println("Error CommitController en postCommit: " + e.getMessage());
+        }
+    }
+
+    public void updateDepartamentoXML(DepartamentoDTO departamentoDTO) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(DepartamentoDTO.class);
+            marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(departamentoService.updateDepartamento(departamentoDTO), System.out);
+        } catch (SQLException | JAXBException e) {
+            System.err.println("Error CommitController en updateCommit: " + e.getMessage());
+        }
+    }
+
+    public void deleteDepartamentoXML(DepartamentoDTO departamentoDTO) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(DepartamentoDTO.class);
+            marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(departamentoService.deleteDepartamento(departamentoDTO), System.out);
+        } catch (SQLException | JAXBException e) {
+            System.err.println("Error CommitController en deleteCommit: " + e.getMessage());
+        }
+    }
+
+    public void getDepartamentoFullInfoXML(DepartamentoDTO departamentoDTO) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(DepartamentoDTO.class);
+            marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(departamentoService.getDepartamentoFullInfo(departamentoDTO.getIdDepartamento()), System.out);
+        } catch (SQLException | JAXBException e) {
+            System.err.println("Error CommitController en getDepartamentoFullInfoXML: " + e.getMessage());
         }
     }
 }

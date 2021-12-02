@@ -21,6 +21,7 @@ services:
       - 3306
     volumes:
       - mariadb-volume:/var/lib/mysql
+      #Init db automaticamente
       - ./sql/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
 
     networks:

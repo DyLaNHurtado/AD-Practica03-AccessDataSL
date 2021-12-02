@@ -1,23 +1,21 @@
-import model.Commit;
-import model.Departamento;
-import model.Programador;
-import repository.*;
-
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
+import utils.ApplicationProperties;
 
 public class App {
     public static void main(String[] args) {
-            RepoProyecto repoProyecto= new RepoProyecto();
-            RepoIssue repoIssue= new RepoIssue();
-            RepoProgramador repoProgramador= new RepoProgramador();
-            RepoDepartamento repoDepartamento= new RepoDepartamento();
+        ApplicationProperties properties = new ApplicationProperties();
+        System.out.println("Bienvenid@s a " +
+                properties.readProperty("app.title") + " "
+                + properties.readProperty("app.version") +
+                " hecho por : " +properties.readProperty("app.autores")+" de " +
+                properties.readProperty("app.curso"));
+        Facade facade = Facade.getInstance();
+        // Chequeamos el sistema
+        facade.checkService();
 
-        try {
-            System.out.println(repoIssue.getAll());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        // Iniciamos la base de datos al estado original en cada prueba
+        if (properties.readProperty("database.init").equals("true"))
+            facade.initDataBase();
+
+        facade.selectJsonOrXml();
     }
 }

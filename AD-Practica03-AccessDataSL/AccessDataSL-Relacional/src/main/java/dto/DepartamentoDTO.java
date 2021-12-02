@@ -5,10 +5,12 @@ import com.google.gson.GsonBuilder;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 @Data
 @Builder
+
 public class DepartamentoDTO {
     private String idDepartamento;
     private String nombre;

@@ -5,15 +5,18 @@ import com.google.gson.GsonBuilder;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.xml.bind.annotation.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
 @Builder
+
 public class CommitDTO {
     private String idCommit;
     private String titulo;
     private String texto;
-    private Date fecha;
+    private LocalDate fecha;
     private String repositorio;
     private String proyecto;
     private String autor;

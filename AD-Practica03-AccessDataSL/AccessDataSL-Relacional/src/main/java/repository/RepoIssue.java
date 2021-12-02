@@ -1,10 +1,8 @@
 package repository;
 
 import database.DataBaseController;
-import model.Commit;
 import model.Issue;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +17,7 @@ public class RepoIssue implements CrudRepository<Issue, String> {
         System.out.println("Obteniendo todos los issues");
         String query = "SELECT * FROM issue";
         DataBaseController db = DataBaseController.getInstance();
-        ArrayList<Issue> list = null;
+        ArrayList<Issue> list ;
         db.open();
         ResultSet result = db.select(query).orElseThrow(() -> new SQLException("Error al consultar issues"));
         list = new ArrayList<>();
@@ -29,7 +27,7 @@ public class RepoIssue implements CrudRepository<Issue, String> {
                             result.getString("idIssue"),
                             result.getString("titulo"),
                             result.getString("texto"),
-                            result.getDate("fecha"),
+                            result.getDate("fecha").toLocalDate(),
                             List.of(result.getString(String.join(";","programadores"))),
                             result.getString("proyecto"),
                             result.getString("repositorio"),
@@ -53,7 +51,7 @@ public class RepoIssue implements CrudRepository<Issue, String> {
                     result.getString("idIssue"),
                     result.getString("titulo"),
                     result.getString("texto"),
-                    result.getDate("fecha"),
+                    result.getDate("fecha").toLocalDate(),
                     List.of(result.getString(String.join(";","programadores"))),
                     result.getString("proyecto"),
                     result.getString("repositorio"),
@@ -70,7 +68,7 @@ public class RepoIssue implements CrudRepository<Issue, String> {
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.insert(query, UUID.randomUUID().toString(),
-                        issue.getTitulo(), issue.getTexto(), new Date(issue.getFecha().getTime()),
+                        issue.getTitulo(), issue.getTexto(), issue.getFecha(),
                 String.join(";", issue.getProgramadores()),issue.getProyecto(),issue.getRepositorio(),
                         issue.getEstado())
                 .orElseThrow(() -> new SQLException("Error insertar issue"));
@@ -86,7 +84,7 @@ public class RepoIssue implements CrudRepository<Issue, String> {
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.update(query, issue.getIdIssue(),
-                issue.getTitulo(), issue.getTexto(), issue.getFecha().getTime(),
+                issue.getTitulo(), issue.getTexto(), issue.getFecha(),
                 String.join(";", issue.getProgramadores()),issue.getProyecto(),issue.getRepositorio(),
                 issue.getEstado(),issue.getIdIssue());
         db.close();
@@ -117,7 +115,7 @@ public class RepoIssue implements CrudRepository<Issue, String> {
                     result.getString("idIssue"),
                     result.getString("titulo"),
                     result.getString("texto"),
-                    result.getDate("fecha"),
+                    result.getDate("fecha").toLocalDate(),
                     List.of(result.getString(String.join(";","programadores"))),
                     result.getString("proyecto"),
                     result.getString("repositorio"),
@@ -131,7 +129,7 @@ public class RepoIssue implements CrudRepository<Issue, String> {
         System.out.println("Obteniendo todos los issues");
         String query = "SELECT * FROM issue WHERE repositorio = ?";
         DataBaseController db = DataBaseController.getInstance();
-        ArrayList<Issue> list = null;
+        ArrayList<Issue> list;
         db.open();
         ResultSet result = db.select(query,id).orElseThrow(() -> new SQLException("Error al consultar issues"));
         list = new ArrayList<>();
@@ -141,7 +139,7 @@ public class RepoIssue implements CrudRepository<Issue, String> {
                             result.getString("idIssue"),
                             result.getString("titulo"),
                             result.getString("texto"),
-                            result.getDate("fecha"),
+                            result.getDate("fecha").toLocalDate(),
                             List.of(result.getString(String.join(";","programadores"))),
                             result.getString("proyecto"),
                             result.getString("repositorio"),

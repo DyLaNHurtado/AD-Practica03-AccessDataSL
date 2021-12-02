@@ -3,6 +3,7 @@ package database;
 
 import lombok.NonNull;
 import org.apache.ibatis.jdbc.ScriptRunner;
+import utils.ApplicationProperties;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -65,17 +66,17 @@ public class DataBaseController {
      * Puede ser directa "hardcodeada" o asignada dinámicamente a traves de ficheros .env o properties
      */
     private void initConfig() {
-        // Leemos los datos de la base de datos que pueden estar en
-        // porperties o en .env
-        // imaginemos que el usuario y pasword estaán en .env y el resto en application.properties
-        // si no los rellenamos aquí.
-        this.serverUrl = "localhost";
-        this.serverPort = "3306";
-        this.dataBaseName = "adSL";
-        this.jdbcDriver = "com.mariadb.cj.jdbc.Driver";
-        this.user = "user";
-        this.password = "user1234";
+        // Leemos los datos de la base de datos que estan en
+        // porperties
+        ApplicationProperties properties = new ApplicationProperties();
+        this.serverUrl = properties.readProperty("database.server.url");
+        this.serverPort = properties.readProperty("database.server.port");
+        this.dataBaseName = properties.readProperty("database.name");
+        this.jdbcDriver = properties.readProperty("database.jdbc.driver");
+        this.user = properties.readProperty("database.username");
+        this.password = properties.readProperty("database.password");
     }
+
 
     /**
      * Abre la conexión con el servidor  de base de datos

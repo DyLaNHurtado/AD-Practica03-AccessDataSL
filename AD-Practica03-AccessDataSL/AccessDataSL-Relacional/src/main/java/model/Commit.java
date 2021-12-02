@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
@@ -17,7 +19,7 @@ public class Commit {
     private String idCommit;
     private String titulo;
     private String texto;
-    private Date fecha;
+    private LocalDate fecha;
     private String repositorio;
     private String proyecto;
     private String autor;

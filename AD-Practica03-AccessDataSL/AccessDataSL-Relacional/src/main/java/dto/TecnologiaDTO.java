@@ -5,8 +5,12 @@ import com.google.gson.GsonBuilder;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 @Data
 @Builder
+
+@XmlRootElement(name="tecnologia")
 public class TecnologiaDTO {
     private String idTecnologia;
     private String nombre;

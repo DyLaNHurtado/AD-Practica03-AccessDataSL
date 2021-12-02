@@ -17,7 +17,7 @@ import java.util.UUID;
 public class Programador {
     private String idProgramador;
     private String nombre;
-    private Date fechaAlta;
+    private LocalDate fechaAlta;
     private String idDepartamento;
     private List<String> proyectosParticipa;
     private List<String> commits;

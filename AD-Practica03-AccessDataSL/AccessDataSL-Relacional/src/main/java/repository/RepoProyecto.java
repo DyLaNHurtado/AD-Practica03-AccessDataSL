@@ -8,7 +8,6 @@ import model.Repositorio;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Date;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,7 +17,7 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
         System.out.println("Obteniendo todos los proyecto");
         String query = "SELECT * FROM proyecto";
         DataBaseController db = DataBaseController.getInstance();
-        ArrayList<Proyecto> list = null;
+        ArrayList<Proyecto> list;
         db.open();
         ResultSet result = db.select(query).orElseThrow(() -> new SQLException("Error al consultar proyecto"));
         list = new ArrayList<>();
@@ -29,8 +28,8 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
                             result.getString("nombre"),
                             result.getString("idJefe"),
                             result.getDouble("presupuesto"),
-                            result.getDate("fechaInicio"),
-                            result.getDate("fechaFin"),
+                            result.getDate("fechaInicio").toLocalDate(),
+                            result.getDate("fechaFin").toLocalDate(),
                             List.of(result.getString("tecnologias").split(";")),
                             result.getString("idRepositorio"),
                             result.getString("idDepartamento")));
@@ -53,8 +52,8 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
                     result.getString("nombre"),
                     result.getString("idJefe"),
                     result.getDouble("presupuesto"),
-                    result.getDate("fechaInicio"),
-                    result.getDate("fechaFin"),
+                    result.getDate("fechaInicio").toLocalDate(),
+                    result.getDate("fechaFin").toLocalDate(),
                     List.of(result.getString("tecnologias").split(";")),
                     result.getString("idRepositorio"),
                     result.getString("idDepartamento")
@@ -79,7 +78,7 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
                 db.open();
                 db.insert(query, UUID.randomUUID().toString(),
                                 proyecto.getNombre(), proyecto.getIdJefe(), proyecto.getPresupuesto(),
-                                new Date(proyecto.getFechaInicio().getTime()), new Date(proyecto.getFechaFin().getTime()),
+                                proyecto.getFechaInicio(), proyecto.getFechaFin(),
                                 String.join(";", proyecto.getTecnologias()),
                                 proyecto.getIdRepositorio())
                         .orElseThrow(() -> new SQLException("Error insertar proyecto"));
@@ -145,8 +144,8 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
                     result.getString("nombre"),
                     result.getString("idJefe"),
                     result.getDouble("presupuesto"),
-                    result.getDate("fechaInicio"),
-                    result.getDate("fechaFin"),
+                    result.getDate("fechaInicio").toLocalDate(),
+                    result.getDate("fechaFin").toLocalDate(),
                     List.of(result.getString("tecnologias").split(";")),
                     result.getString("idRepositorio"),
                     result.getString("idDepartamento")
@@ -168,8 +167,8 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
                     result.getString("nombre"),
                     result.getString("idJefe"),
                     result.getDouble("presupuesto"),
-                    result.getDate("fechaInicio"),
-                    result.getDate("fechaFin"),
+                    result.getDate("fechaInicio").toLocalDate(),
+                    result.getDate("fechaFin").toLocalDate(),
                     List.of(result.getString("tecnologias").split(";")),
                     result.getString("idRepositorio"),
                     result.getString("idDepartamento")//ojo
@@ -182,7 +181,7 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
         System.out.println("Obteniendo todos los proyecto");
         String query = "SELECT * FROM proyecto WHERE idDepartamento = ?";
         DataBaseController db = DataBaseController.getInstance();
-        ArrayList<Proyecto> list = null;
+        ArrayList<Proyecto> list;
         db.open();
         ResultSet result = db.select(query,id).orElseThrow(() -> new SQLException("Error al consultar proyecto"));
         list = new ArrayList<>();
@@ -193,8 +192,8 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
                             result.getString("nombre"),
                             result.getString("idJefe"),
                             result.getDouble("presupuesto"),
-                            result.getDate("fechaInicio"),
-                            result.getDate("fechaFin"),
+                            result.getDate("fechaInicio").toLocalDate(),
+                            result.getDate("fechaFin").toLocalDate(),
                             List.of(result.getString("tecnologias").split(";")),
                             result.getString("idRepositorio"),
                             result.getString("idDepartamento")));
@@ -220,9 +219,7 @@ public class RepoProyecto implements CrudRepository<Proyecto, String> {
                     if (repoProgramador.getAllByProyectoSortByCommits(x.getIdProyecto()).isPresent()) {
                         List<Programador> programadores = repoProgramador.getAllByProyectoSortByCommits(x.getIdProyecto()).get();
 
-                        programadores.forEach(p -> {
-                            salarios.add(p.getSalario());
-                        });}
+                        programadores.forEach(p -> salarios.add(p.getSalario()));}
 
                     } catch(SQLException e){
                         e.printStackTrace();

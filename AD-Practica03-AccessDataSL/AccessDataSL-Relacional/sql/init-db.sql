@@ -1,13 +1,13 @@
 SET NAMES utf8;
 SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
-SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
+SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE';
 
 USE adSL;
 
 SET NAMES utf8mb4;
 
-
+DROP TABLE IF EXISTS `commit`;
 CREATE TABLE `commit`
 (
     `idCommit`    varchar(36)  NOT NULL,
@@ -40,7 +40,7 @@ VALUES ('5b64bfd6-08e4-4325-b037-bd4fcfafe783', 'commit 1', 'texto 1',
         '6c5b7c5a-d30b-400f-9c11-84dc2b49f01e');
 
 
-
+DROP TABLE IF EXISTS `conocimiento`;
 CREATE TABLE `conocimiento`
 (
     `idConocimiento` varchar(36)  NOT NULL,
@@ -60,6 +60,7 @@ VALUES ('df59793e-0d47-4347-bcfa-e4c86d6974cb','1376acc9-79a9-4bf1-9084-c82e9a07
        ('60aff2c7-f86b-44cf-9b35-25449fffcd28','606aba4c-b76e-4fa3-9eb8-48e20d729353',
         '20bcca63-7b60-4a43-bb10-4c9735587d16;cb231a1d-ffc8-4a64-b090-1334f5f4f740');
 
+DROP TABLE IF EXISTS `creaciones`;
 CREATE TABLE `creaciones`
 (
     `idCreaciones`  varchar(36)  NOT NULL,
@@ -80,7 +81,7 @@ VALUES ('a6ce0e70-c34d-4b05-a141-8be59b60f16b','1f9b764e-570f-4041-a0c9-fc58a794
        ('176c21fe-fcf1-4918-9fe8-5fb6c219308f','6c5b7c5a-d30b-400f-9c11-84dc2b49f01e',
         '606aba4c-b76e-4fa3-9eb8-48e20d729353');
 
-
+DROP TABLE IF EXISTS `departamento`;
 CREATE TABLE `departamento`
 (
     `idDepartamento`   varchar(36)  NOT NULL,
@@ -117,7 +118,7 @@ VALUES ('1e89386d-be37-4930-b6ae-bcba6c9917b4', 'Recursos Humanos', '53269670-15
         'f89062d9-ba34-40a4-b6af-a21a0dc093be', 92800,
         '5cc55142-469b-4d42-9b9b-b9df2614bcc7;606aba4c-b76e-4fa3-9eb8-48e20d729353');
 
-
+DROP TABLE IF EXISTS `issue`;
 CREATE TABLE `issue`
 (
     `idIssue`       varchar(36)  NOT NULL,
@@ -148,7 +149,7 @@ VALUES ('1f9b764e-570f-4041-a0c9-fc58a794eb0d', 'arreglo 1', 'se ha encontrado u
         '2d1d1422-fede-4e27-8883-3ffdb1be1a7c', 'ed38db33-7fd3-4242-91e4-a411d5fe3b1f', 'pendiente');
 
 
-
+DROP TABLE IF EXISTS `programador`;
 CREATE TABLE `programador`
 (
     `idProgramador`      varchar(36)  NOT NULL,
@@ -213,7 +214,7 @@ VALUES ('1376acc9-79a9-4bf1-9084-c82e9a07f432', 'Barnie Stinson', '2019-06-03', 
         '20bcca63-7b60-4a43-bb10-4c9735587d16;4f119f1b-7ccf-49f4-b56f-fdace8589b1c', 1600);
 
 
-
+DROP TABLE IF EXISTS `proyecto`;
 CREATE TABLE `proyecto`
 (
     `idProyecto`     varchar(36)  NOT NULL,
@@ -241,25 +242,25 @@ VALUES ('81ee1211-760c-493d-968a-380e6af67363', 'Power Project',
 
        ('f89062d9-ba34-40a4-b6af-a21a0dc093be', 'HR Project',
         '1376acc9-79a9-4bf1-9084-c82e9a07f432', 3000,
-        '2019-09-22', '',
+        '2019-09-22', '2019-12-31',
         '20bcca63-7b60-4a43-bb10-4c9735587d16;4f119f1b-7ccf-49f4-b56f-fdace8589b1c',
         'f1174508-8659-4654-82ce-af2704a152de', '1e89386d-be37-4930-b6ae-bcba6c9917b4'),
 
        ('10f2db5c-a0c3-40ec-a1bf-a95cab6bebdf', 'DF Project',
         '1376acc9-79a9-4bf1-9084-c82e9a07f432', 1000,
-        '2009-02-22', '',
+        '2009-02-22', '2017-04-03',
         '20bcca63-7b60-4a43-bb10-4c9735587d16',
         '4863c6e9-606f-42bb-aaff-6e961de25054', '1e89386d-be37-4930-b6ae-bcba6c9917b4'),
 
        ('2d1d1422-fede-4e27-8883-3ffdb1be1a7c', 'CD Project',
         '1376acc9-79a9-4bf1-9084-c82e9a07f432', 8500,
-        '2009-02-22', '',
+        '2009-02-22', '2014-04-03',
         'cb231a1d-ffc8-4a64-b090-1334f5f4f740',
         'ed38db33-7fd3-4242-91e4-a411d5fe3b1f', '2d1d1422-fede-4e27-8883-3ffdb1be1a7c'),
 
        ('233b5d47-0ced-4e6f-8982-b2f95b6b25b9', 'Logic Project',
         '1376acc9-79a9-4bf1-9084-c82e9a07f432', 5000,
-        '2008-05-23', '',
+        '2008-05-23', '2010-04-03',
         '20bcca63-7b60-4a43-bb10-4c9735587d16;4f119f1b-7ccf-49f4-b56f-fdace8589b1c',
         '2a11c73f-faa0-4346-82ac-fe6115ed4d6a', '512a0695-3294-4c2c-86d9-4babd4485fa8'),
 
@@ -270,7 +271,7 @@ VALUES ('81ee1211-760c-493d-968a-380e6af67363', 'Power Project',
         '512a0695-3294-4c2c-86d9-4babd4485fa8');
 
 
-
+DROP TABLE IF EXISTS `repositorio`;
 CREATE TABLE `repositorio`
 (
     `idRepositorio` varchar(36)  NOT NULL,
@@ -308,7 +309,7 @@ VALUES ('f64c5364-faa7-41b7-bca9-3b27f95d8fa8', '2019-11-20', '81ee1211-760c-493
         '3a1690b0-b7f3-4303-8413-1f63578c3194', '');
 
 
-
+DROP TABLE IF EXISTS `tecnologia`;
 CREATE TABLE `tecnologia`
 (
     `idTecnologia` varchar(36) NOT NULL,
@@ -329,7 +330,7 @@ VALUES ('20bcca63-7b60-4a43-bb10-4c9735587d16',
        ('cb231a1d-ffc8-4a64-b090-1334f5f4f740',
         'Java');
 
-
+DROP TABLE IF EXISTS `utilidades`;
 CREATE TABLE `utilidades`
 (
     `idUtilidades` varchar(36)  NOT NULL,
@@ -351,7 +352,7 @@ VALUES ('a861eeba-2983-46ea-a3c1-6ccdaed4f21e', '81ee1211-760c-493d-968a-380e6af
         '20bcca63-7b60-4a43-bb10-4c9735587d16');
 
 
-
+DROP TABLE IF EXISTS `participaciones`;
 CREATE TABLE `participaciones`
 (
     `idParticipaciones` varchar(36)  NOT NULL,

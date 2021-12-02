@@ -26,7 +26,7 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String> {
                     new Repositorio(
                             result.getString("idRepositorio"),
                             result.getString("idProyecto"),
-                            result.getDate("fechaCreacion"),
+                            result.getDate("fechaCreacion").toLocalDate(),
                             List.of(result.getString("commits").split(";")),
                             List.of(result.getString("issues").split(";"))
 
@@ -48,7 +48,7 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String> {
             repositorio = new Repositorio(
                     result.getString("idRepositorio"),
                     result.getString("idProyecto"),
-                    result.getDate("fechaCreacion"),
+                    result.getDate("fechaCreacion").toLocalDate(),
                     List.of(result.getString("commits").split(";")),
                     List.of(result.getString("issues").split(";"))
             );}
@@ -63,7 +63,7 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String> {
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.insert(query, UUID.randomUUID().toString(),
-                        repositorio.getIdProyecto(),new Date(repositorio.getFechaCreacion().getTime()),
+                        repositorio.getIdProyecto(),repositorio.getFechaCreacion(),
                         String.join(";", repositorio.getCommits()),
                         String.join(";", repositorio.getIssues()))
                 .orElseThrow(() -> new SQLException("Error insertar repositorio"));
@@ -79,7 +79,7 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String> {
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.update(query, repositorio.getIdRepositorio(),
-                new Date(repositorio.getFechaCreacion().getTime()), repositorio.getIdProyecto(),
+                repositorio.getFechaCreacion(), repositorio.getIdProyecto(),
                 String.join(";", repositorio.getCommits()),
                 String.join(";", repositorio.getIssues()),repositorio.getIdProyecto());
         db.close();

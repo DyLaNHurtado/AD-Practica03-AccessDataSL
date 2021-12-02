@@ -25,7 +25,7 @@ public class RepoCommit implements CrudRepository<Commit, String> {
                             result.getString("idCommit"),
                             result.getString("titulo"),
                             result.getString("texto"),
-                            result.getDate("fecha"),
+                            result.getDate("fecha").toLocalDate(),
                             result.getString("repositorio"),
                             result.getString("proyecto"),
                             result.getString("autor"),
@@ -49,7 +49,7 @@ public class RepoCommit implements CrudRepository<Commit, String> {
                     result.getString("idCommit"),
                     result.getString("titulo"),
                     result.getString("texto"),
-                    result.getDate("fecha"),
+                    result.getDate("fecha").toLocalDate(),
                     result.getString("repositorio"),
                     result.getString("proyecto"),
                     result.getString("autor"),
@@ -92,7 +92,7 @@ public class RepoCommit implements CrudRepository<Commit, String> {
         DataBaseController db = DataBaseController.getInstance();
         db.open();
         db.update(query, commit.getIdCommit(),
-                commit.getTitulo(), commit.getTexto(), commit.getFecha().getTime(),
+                commit.getTitulo(), commit.getTexto(), commit.getFecha(),
                 commit.getRepositorio(), commit.getProyecto(), commit.getAutor(),
                 commit.getIssue(),commit.getIdCommit());
         db.close();
@@ -126,7 +126,7 @@ public class RepoCommit implements CrudRepository<Commit, String> {
                             result.getString("idCommit"),
                             result.getString("titulo"),
                             result.getString("texto"),
-                            result.getDate("fecha"),
+                            result.getDate("fecha").toLocalDate(),
                             result.getString("repositorio"),
                             result.getString("proyecto"),
                             result.getString("autor"),
