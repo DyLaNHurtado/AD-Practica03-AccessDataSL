@@ -10,6 +10,11 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class RepoDepartamento implements CrudRepository<Departamento, String> {
+    /**
+     * Coger todos los departamentos
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<List<Departamento>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los departamentos");
@@ -37,7 +42,11 @@ public class RepoDepartamento implements CrudRepository<Departamento, String> {
         db.close();
         return Optional.of(list);
     }
-
+    /**
+     * Coger los departamentos con una id
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Departamento> getById(String id) throws SQLException {
         System.out.println("Obteniendo departamento con id: " + id);
@@ -62,7 +71,11 @@ public class RepoDepartamento implements CrudRepository<Departamento, String> {
         db.close();
         return Optional.ofNullable(departamento);
     }
-
+    /**
+     * Guardar un deoartamento
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Departamento> save(Departamento departamento) throws SQLException {
         System.out.println("Insertando departamento");
@@ -81,7 +94,11 @@ public class RepoDepartamento implements CrudRepository<Departamento, String> {
 
         return Optional.of(departamento);
     }
-
+    /**
+     * Updatear un departamento
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Departamento> update(Departamento departamento) throws SQLException {
         System.out.println("Actualizando departamento con id: " + departamento.getIdDepartamento());
@@ -99,7 +116,11 @@ public class RepoDepartamento implements CrudRepository<Departamento, String> {
 
         return Optional.of(departamento);
     }
-
+    /**
+     * Borrar un departamento
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Departamento> delete(Departamento departamento) throws SQLException {
         RepoProgramador repoProgramador = new RepoProgramador();
@@ -126,7 +147,11 @@ public class RepoDepartamento implements CrudRepository<Departamento, String> {
         }
         return Optional.of(departamento);
     }
-
+    /**
+     * Obtener departamento segun idJefe
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<Departamento> getByIdJefe(String id) throws SQLException {
         System.out.println("Obteniendo departamento con idJefe: " + id);
         //buscar id con % delante y % detras para coger solo id ya que está separada con ;
@@ -151,10 +176,13 @@ public class RepoDepartamento implements CrudRepository<Departamento, String> {
         db.close();
         return Optional.ofNullable(departamento);
     }
+    /**
+     * Operacion 1:
+     * Obtener de un departamento, los proyectos (información completa) y trabajadores asociados con sus datos completos
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
 
-    // Operacion 1:
-    //Obtener de un departamento, los proyectos (información completa) y trabajadores
-    //asociados con sus datos completos
     public Optional<List<Object>> getDepartamentoInfo(String id) throws SQLException {
         RepoProyecto repoProyecto = new RepoProyecto();
         RepoProgramador repoProgramador = new RepoProgramador();

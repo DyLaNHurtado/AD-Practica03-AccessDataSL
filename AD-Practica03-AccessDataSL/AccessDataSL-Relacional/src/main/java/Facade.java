@@ -8,20 +8,33 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
-
+/**
+ * Patron Facade que organiza y facilita la llamada en el main
+ * @see App
+ * @author Dylan Hurtado y Javier González
+ * @version 02/09/21 - 1.0
+ */
 public class Facade {
     private static Facade instance;
 
     private Facade() {
     }
-
+    /**
+     * Patron Singleton
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public static Facade getInstance() {
         if (instance == null) {
             instance = new Facade();
         }
         return instance;
     }
-
+    /**
+     * Comprobar servicio controller
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public void checkService() {
         DataBaseController controller = DataBaseController.getInstance();
         try {
@@ -36,7 +49,11 @@ public class Facade {
             System.exit(1);
         }
     }
-
+    /**
+     * Iniciar la base de datos
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public void initDataBase() {
         String sqlFile = System.getProperty("user.dir") + File.separator + "sql" + File.separator + "init-db.sql";
         System.out.println("***************************\n"+
@@ -56,7 +73,11 @@ public class Facade {
             System.exit(1);
         }
     }
-
+    /**
+     * Dar al usuario la opcion de generar xml o json
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public void selectJsonOrXml(){
         System.out.println("Selecciona una salida para visualizar las operaciones (xml or json): ");
         Scanner sc = new Scanner (System.in);
@@ -75,7 +96,11 @@ public class Facade {
             salidaXML();
         }
     }
-
+    /**
+     * Dar salida al JSON
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void salidaJSON(){
         System.out.println("-------------------------------\n"+
                 "\t\tOPERACIONES CRUD\n"+
@@ -121,7 +146,11 @@ public class Facade {
                 "-------------------------------\n");
         this.operacionesExtrasJSON();
     }
-
+    /**
+     * Dar salida al XML
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void salidaXML(){
         System.out.println("-------------------------------\n"+
                 "\t\tOPERACIONES CRUD\n"+
@@ -167,7 +196,11 @@ public class Facade {
                 "-------------------------------\n");
         this.operacionesExtrasXML();
     }
-
+    /**
+     * Metodo salida de comits a xml
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void commitsXML() {
         CommitController commitController = CommitController.getInstance();
 
@@ -210,6 +243,11 @@ public class Facade {
                 .build();
         commitController.deleteCommitXML(commitDTO);
     }
+    /**
+     * Metodo salida de departamento a xml
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void departamentoXML() {
         DepartamentoController departamentoController = DepartamentoController.getInstance();
 
@@ -253,6 +291,11 @@ public class Facade {
                 .build();
         departamentoController.deleteDepartamentoXML(departamentoDTO);
     }
+    /**
+     * Metodo salida de issue a xml
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void issueXML() {
 
         IssueController issueController = IssueController.getInstance();
@@ -299,6 +342,11 @@ public class Facade {
         issueController.deleteIssueXML(issueDTO);
 
     }
+    /**
+     * Metodo salida de programador a xml
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void programadorXML() {
 
         ProgramadorController programadorController = ProgramadorController.getInstance();
@@ -347,7 +395,11 @@ public class Facade {
         programadorController.deleteProgramadorXML(programadorDTO);
     }
 
-
+    /**
+     * Metodo salida de proyecto a xml
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void proyectoXML() {
         ProyectoController proyectoController = ProyectoController.getInstance();
 
@@ -394,6 +446,11 @@ public class Facade {
         proyectoController.deleteProyectoXML(proyectoDTO);
 
     }
+    /**
+     * Metodo salida de repositorio a xml
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void repositorioXML() {
 
         RepositorioController repositorioController = RepositorioController.getInstance();
@@ -432,6 +489,11 @@ public class Facade {
         repositorioController.deleteRepositorioXML(repositorioDTO);
 
     }
+    /**
+     * Metodo salida de tecnologia a xml
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void tecnologiaXML() {
 
         TecnologiaController tecnologiaController = TecnologiaController.getInstance();
@@ -464,7 +526,11 @@ public class Facade {
 
     }
 
-
+    /**
+     * Metodo contenedor de las operaciones del apartado 5 en XML
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void operacionesExtrasXML() {
         operacion1XML();
         operacion2XML();
@@ -473,7 +539,12 @@ public class Facade {
         operacion5XML();
 
     }
-
+    /**
+     * Operacion 1 XML
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     * @return De un departamento, sus proyectos y trabajadores con informacion completa
+     */
     private void operacion1XML() {
         System.out.println("**Operacion 1:\n" +
                 "**Obtener de un departamento, los proyectos (información completa) y trabajadores\n" +
@@ -484,7 +555,12 @@ public class Facade {
                 .build();
         departamentoController.getDepartamentoFullInfoXML(departamentoDTO);
     }
-
+    /**
+     * Operacion 2 XML
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     * @return Listado de issues abiertas por proyecto que no se hayan consolidado en commits
+     */
     private void operacion2XML() {
         System.out.println("**Operacion 2:\n" +
                 "**Listado de issues abiertas por proyecto que no se hayan consolidado en commits.**" );
@@ -495,7 +571,12 @@ public class Facade {
                 .build();
         issueController.getAllAbiertasByProyectoXML(issueDTO);
     }
-
+    /**
+     * Operacion 3 XML
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     * @return Programadores de un proyecto ordenados por número de commits
+     */
     private void operacion3XML() {
         System.out.println("**Operacion 3:\n" +
                 "**Programadores de un proyecto ordenados por número de commits.**" );
@@ -506,6 +587,12 @@ public class Facade {
         programadorController.getAllByProyectoSortByCommitsXML(proyectoDTO);
     }
 
+    /**
+     * Operacion 4 XML
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     * @return Programadores con su productividad completa: proyectos en los que participa, commits e issues asignadas con info completa
+     */
     private void operacion4XML() {
         System.out.println("**Operacion 4:\n" +
                 "**Programadores con su productividad completa: proyectos\n , commits" +
@@ -513,7 +600,12 @@ public class Facade {
         ProgramadorController programadorController = ProgramadorController.getInstance();
         programadorController.getAllProgramadoresInfoXML();
     }
-
+    /**
+     * Operacion 5 XML
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     * @return Obtener los tres proyectos más caros en base a su presupuesto asignado y el salario de cada trabajador que participa
+     */
     private void operacion5XML() {
         System.out.println("**Operacion 5:\n" +
                 "**Obtener los tres proyectos más caros en base a su presupuesto asignado y el salario\n" +
@@ -522,7 +614,11 @@ public class Facade {
         proyectoController.getProyectosMasCarosXML();
     }
 
-
+    /**
+     * Metodo salida de comits a JSON
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void commitsJSON() {
         CommitController commitController = CommitController.getInstance();
 
@@ -567,6 +663,11 @@ public class Facade {
                 .build();
         System.out.println(commitController.deleteCommitJSON(commitDTO));
     }
+    /**
+     * Metodo salida de departamento a JSON
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
 
     private void departamentoJSON() {
         DepartamentoController departamentoController = DepartamentoController.getInstance();
@@ -611,7 +712,11 @@ public class Facade {
                 .build();
         System.out.println(departamentoController.deleteDepartamentoJSON(departamentoDTO));
     }
-
+    /**
+     * Metodo salida de issues a JSON
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void issueJSON() {
         IssueController issueController = IssueController.getInstance();
 
@@ -656,7 +761,11 @@ public class Facade {
                 .build();
         System.out.println(issueController.deleteIssueJSON(issueDTO));
     }
-
+    /**
+     * Metodo salida de programadores a JSON
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void programadorJSON() {
         ProgramadorController programadorController = ProgramadorController.getInstance();
 
@@ -704,7 +813,11 @@ public class Facade {
         System.out.println(programadorController.deleteProgramadorJSON(programadorDTO));
     }
 
-
+    /**
+     * Metodo salida de proyectos a JSON
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void proyectoJSON() {
         ProyectoController proyectoController = ProyectoController.getInstance();
 
@@ -751,7 +864,11 @@ public class Facade {
         System.out.println(proyectoController.deleteProyectoJSON(proyectoDTO));
     }
 
-
+    /**
+     * Metodo salida de repositorio a JSON
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void repositorioJSON() {
         RepositorioController repositorioController = RepositorioController.getInstance();
 
@@ -788,7 +905,11 @@ public class Facade {
                 .build();
         System.out.println(repositorioController.deleteRepositorioJSON(repositorioDTO));
     }
-
+    /**
+     * Metodo salida de tecnologias a JSON
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void tecnologiaJSON() {
         TecnologiaController tecnologiaController = TecnologiaController.getInstance();
 
@@ -818,7 +939,11 @@ public class Facade {
                 .build();
         System.out.println(tecnologiaController.deleteTecnologiaJSON(tecnologiaDTO));
     }
-
+    /**
+     * Metodo contenedor de las operaciones del apartado 5 en JSON
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     private void operacionesExtrasJSON(){
         operacion1JSON();
         operacion2JSON();
@@ -826,7 +951,12 @@ public class Facade {
         operacion4JSON();
         operacion5JSON();
     }
-
+    /**
+     * Operacion 1 JSON
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     * @return De un departamento, sus proyectos y trabajadores con informacion completa
+     */
         private void operacion1JSON(){
             System.out.println("**Operacion 1:\n" +
                     "**Obtener de un departamento, los proyectos (información completa) y trabajadores\n" +
@@ -838,7 +968,12 @@ public class Facade {
             System.out.println(departamentoController.getDepartamentoFullInfoJSON(departamentoDTO));
         }
 
-
+    /**
+     * Operacion 2 JSON
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     * @return Listado de issues abiertas por proyecto que no se hayan consolidado en commits
+     */
     private void operacion2JSON(){
         System.out.println("**Operacion 2:\n" +
                 "**Listado de issues abiertas por proyecto que no se hayan consolidado en commits.**" );
@@ -849,7 +984,12 @@ public class Facade {
                 .build();
         System.out.println(issueController.getAllAbiertasByProyectoJSON(issueDTO));
     }
-
+    /**
+     * Operacion 3 JSON
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     * @return Programadores de un proyecto ordenados por número de commits
+     */
     private void operacion3JSON(){
         System.out.println("**Operacion 3:\n" +
                 "**Programadores de un proyecto ordenados por número de commits.**" );
@@ -859,7 +999,12 @@ public class Facade {
                 .build();
         System.out.println(programadorController.getAllByProyectoSortByCommitsJSON(proyectoDTO));
     }
-
+    /**
+     * Operacion 4 JSON
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     * @return Programadores con su productividad completa: proyectos en los que participa, commits e issues asignadas con info completa
+     */
     private void operacion4JSON(){
         System.out.println("**Operacion 4:\n" +
                 "**Programadores con su productividad completa: proyectos\n , commits" +
@@ -867,6 +1012,12 @@ public class Facade {
         ProgramadorController programadorController = ProgramadorController.getInstance();
         System.out.println(programadorController.getAllProgramadoresInfoJSON());
     }
+    /**
+     * Operacion 5 JSON
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     * @return Obtener los tres proyectos más caros en base a su presupuesto asignado y el salario de cada trabajador que participa
+     */
     private void operacion5JSON(){
         System.out.println("**Operacion 5:\n" +
                 "**Obtener los tres proyectos más caros en base a su presupuesto asignado y el salario\n" +

@@ -13,6 +13,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class RepoTecnologia implements CrudRepository<Tecnologia, String> {
+    /**
+     * Coger todas las info tecnologias
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<List<Tecnologia>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los tecnologia");
@@ -33,7 +38,11 @@ public class RepoTecnologia implements CrudRepository<Tecnologia, String> {
         db.close();
         return Optional.of(list);
     }
-
+    /**
+     * Coger tecnologias por id
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Tecnologia> getById(String id) throws SQLException {
         System.out.println("Obteniendo tecnologia con id: " + id);
@@ -50,7 +59,11 @@ public class RepoTecnologia implements CrudRepository<Tecnologia, String> {
         db.close();
         return Optional.ofNullable(tecnologia);
     }
-
+    /**
+     * Guardar tecnologia
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Tecnologia> save(Tecnologia tecnologia) throws SQLException {
         System.out.println("Insertando tecnologia");
@@ -64,7 +77,11 @@ public class RepoTecnologia implements CrudRepository<Tecnologia, String> {
 
         return Optional.of(tecnologia);
     }
-
+    /**
+     * Updatear tecnologia
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Tecnologia> update(Tecnologia tecnologia) throws SQLException {
         System.out.println("Actualizando tecnologia con id: " + tecnologia.getIdTecnologia());
@@ -77,7 +94,11 @@ public class RepoTecnologia implements CrudRepository<Tecnologia, String> {
 
         return Optional.of(tecnologia);
     }
-
+    /**
+     * Borrar tecnologia
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Tecnologia> delete(Tecnologia tecnologia) throws SQLException {
         System.out.println("Eliminando tecnologia con id: " + tecnologia.getIdTecnologia());

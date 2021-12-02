@@ -10,6 +10,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class RepoCommit implements CrudRepository<Commit, String> {
+    /**
+     * Coger todos los commit
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<List<Commit>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los commits");
@@ -35,7 +40,11 @@ public class RepoCommit implements CrudRepository<Commit, String> {
         db.close();
         return Optional.of(list);
     }
-
+    /**
+     * Coger todos los commit por id
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Commit> getById(String id) throws SQLException {
         System.out.println("Obteniendo commit con id: " + id);
@@ -59,7 +68,11 @@ public class RepoCommit implements CrudRepository<Commit, String> {
         db.close();
         return Optional.ofNullable(commit);
     }
-
+    /**
+     * Guardar commit
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Commit> save(Commit commit) throws SQLException {
 
@@ -83,7 +96,11 @@ public class RepoCommit implements CrudRepository<Commit, String> {
         }
         return Optional.of(commit);
     }
-
+    /**
+     * Updatear un commit
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Commit> update(Commit commit) throws SQLException {
 
@@ -99,7 +116,11 @@ public class RepoCommit implements CrudRepository<Commit, String> {
 
         return Optional.of(commit);
     }
-
+    /**
+     * Deletear un commit
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Commit> delete(Commit commit) throws SQLException {
         System.out.println("Eliminando commit con id: " + commit.getIdCommit());
@@ -111,7 +132,11 @@ public class RepoCommit implements CrudRepository<Commit, String> {
 
         return Optional.of(commit);
     }
-
+    /**
+     * Coger todos los commits por repositorio id
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<List<Commit>> getAllByRepositorio(String id) throws SQLException {
         System.out.println("Obteniendo todos los commits");
         String query = "SELECT * FROM commit WHERE repositorio = ?";
@@ -136,7 +161,11 @@ public class RepoCommit implements CrudRepository<Commit, String> {
         db.close();
         return Optional.of(list);
     }
-
+    /**
+     * Coger un commit por autor
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<List<Commit>> getAllByAuthor(String id) throws SQLException {
         if(this.getAll().isPresent()) {
             return Optional.of(this.getAll().get().stream().filter(x -> Objects.equals(x.getAutor(), id)).collect(Collectors.toList()));

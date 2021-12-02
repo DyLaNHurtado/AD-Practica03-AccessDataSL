@@ -11,28 +11,47 @@ import java.util.Optional;
 public abstract class BaseService<T, ID, R extends CrudRepository<T, ID>> {
 
     protected final R repository;
-
-    // Obtiene todos
+    /**
+     * Metodo obtener todos
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<List<T>> getAll() throws SQLException {
         return repository.getAll();
     }
 
-    // Obtiene por ID
+    /**
+     * Metodo obtener por ID
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<T> getById(ID id) throws SQLException {
         return repository.getById(id);
     }
 
-    // Salva
+    /**
+     * Metodo guardar
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<T> save(T t) throws SQLException {
         return repository.save(t);
     }
 
-    // Actualiza
+    /**
+     * Metodo update
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<T> update(T t) throws SQLException {
         return repository.update(t);
     }
 
-    // Elimina
+    /**
+     * Metodo eliminar
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<T> delete(T t) throws SQLException {
         return repository.delete(t);
     }

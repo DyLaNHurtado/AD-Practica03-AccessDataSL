@@ -10,7 +10,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class RepoProgramador implements CrudRepository<Programador, String> {
-
+    /**
+     * Coger todos los programadores
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<List<Programador>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los programadores");
@@ -37,7 +41,11 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         db.close();
         return Optional.of(list);
     }
-
+    /**
+     * Coger programadores por id
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Programador> getById(String id) throws SQLException {
         System.out.println("Obteniendo programador con id: " + id);
@@ -63,7 +71,11 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         return Optional.ofNullable(programador);
     }
 
-
+    /**
+     * Guardar programador
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Programador> save(Programador programador) throws SQLException {
         System.out.println("Insertando programador");
@@ -82,7 +94,11 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
 
         return Optional.of(programador);
     }
-
+    /**
+     * Updatear programadores
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Programador> update(Programador programador) throws SQLException {
 
@@ -120,9 +136,12 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         return Optional.of(programador);
 
     }
-
+    /**
+     * Borrar programador
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
-
     public Optional<Programador> delete(Programador programador) throws SQLException {
 
         RepoProyecto repoProyecto = new RepoProyecto();
@@ -149,7 +168,11 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         }
         return Optional.of(programador);
     }
-
+    /**
+     * Coger programador por id de departamento
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<Programador> getByIdDepartamento(String id) throws SQLException {
 
         System.out.println("Obteniendo programador con idDepartamento: " + id);
@@ -175,6 +198,11 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         return Optional.ofNullable(programador);
 
     }
+    /**
+     * Coger todos los programadores por id de un delartamento
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<List<Programador>> getAllByIdDepartamento(String id) throws SQLException {
         System.out.println("Obteniendo todos los programadores por idDepartamento: "+ id);
         String query = "SELECT * FROM programador WHERE idDepartamento = ?";
@@ -200,8 +228,13 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         db.close();
         return Optional.of(list);
     }
-    //Operacion 3
-    //Programadores de un proyecto ordenados por número de commits.
+    /**
+     * Operacion 3
+     * Programadores de un proyecto ordenados por número de commits.
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
+
     public Optional<List<Programador>> getAllByProyectoSortByCommits(String idProyecto) throws SQLException {
         if(this.getAll().isPresent()){
         return Optional.of(this.getAll().get().stream().filter(x->x.getProyectosParticipa().contains(idProyecto)).sorted(Comparator.comparingInt(x->x.getCommits().size())).collect(Collectors.toList()));
@@ -211,9 +244,12 @@ public class RepoProgramador implements CrudRepository<Programador, String> {
         return Optional.empty();
     }
 
-    //Operacion 4
-    // Programadores con su productividad completa: proyectos , commits
-    //(información completa) e issues asignadas (información completa).
+    /**
+     * Operacion 4
+     * (información completa) e issues asignadas a programador(información completa).
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     public Optional<List<Object>> getAllProgramadoresInfo() throws SQLException {
         RepoCommit repoCommit = new RepoCommit();
         RepoIssue repoIssue = new RepoIssue();

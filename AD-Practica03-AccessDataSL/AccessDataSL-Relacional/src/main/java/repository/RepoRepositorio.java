@@ -12,6 +12,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class RepoRepositorio implements CrudRepository<Repositorio, String> {
+    /**
+     * Coger todos los repositorios
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<List<Repositorio>> getAll() throws SQLException {
         System.out.println("Obteniendo todos los repositorios");
@@ -35,7 +40,11 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String> {
         db.close();
         return Optional.of(list);
     }
-
+    /**
+     * Coger repositorios por id
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Repositorio> getById(String id) throws SQLException {
         System.out.println("Obteniendo repositorio con id: " + id);
@@ -55,7 +64,11 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String> {
         db.close();
         return Optional.ofNullable(repositorio);
     }
-
+    /**
+     * Guardar repositorio
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Repositorio> save(Repositorio repositorio) throws SQLException {
         System.out.println("Insertando repositorio");
@@ -71,7 +84,11 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String> {
 
         return Optional.of(repositorio);
     }
-
+    /**
+     * Updatear repositorio
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Repositorio> update(Repositorio repositorio) throws SQLException {
         System.out.println("Actualizando repositorio con id: " + repositorio.getIdRepositorio());
@@ -86,7 +103,11 @@ public class RepoRepositorio implements CrudRepository<Repositorio, String> {
 
         return Optional.of(repositorio);
     }
-
+    /**
+     * Borrar repositorio
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     @Override
     public Optional<Repositorio> delete(Repositorio repositorio) throws SQLException {
 

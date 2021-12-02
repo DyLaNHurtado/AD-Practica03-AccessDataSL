@@ -9,20 +9,35 @@ import java.util.Optional;
 public interface CrudRepository<T, ID> {
 
     // Operaciones CRUD
-
-    // Obtiene todos
+    /**
+     * Operacion coger TODOS
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     Optional<List<T>> getAll() throws SQLException;
-
-    // Obtiene por ID
+    /**
+     * Operacion coger TODOS por ID
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     Optional<T> getById(ID id) throws SQLException;
-
-    // Salva
+    /**
+     * Operacion coget Guardar
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     Optional<T> save(T t) throws SQLException;
-
-    // Actualiza
+    /**
+     * Operacion Update
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     Optional<T> update(T t) throws SQLException;
-
-    // Elimina
+    /**
+     * Operacion Borrar
+     * @author Dylan Hurtado y Javier González
+     * @version 02/09/21 - 1.0
+     */
     Optional<T> delete(T t) throws SQLException;
 
 
