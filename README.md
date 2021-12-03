@@ -29,7 +29,7 @@ Práctica de Acceso a Datos donde hemos aprendido a montar una base de datos rel
 
 ## Vídeo  
 
-* ...
+* https://drive.google.com/file/d/1pLNfGRgmfaP_gsU-Uz6U3cJpI4ds3g84/view?usp=sharing
 
 ## Autores ✒️
 
