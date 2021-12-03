@@ -2,7 +2,7 @@ package service;
 
 import dto.IssueDTO;
 import mapper.IssueMapper;
-import model.Issue;
+import dao.Issue;
 import repository.RepoIssue;
 
 import java.sql.SQLException;

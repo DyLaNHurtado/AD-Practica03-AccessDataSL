@@ -2,7 +2,7 @@ package service;
 
 import dto.ProyectoDTO;
 import mapper.ProyectoMapper;
-import model.Proyecto;
+import dao.Proyecto;
 import repository.RepoProyecto;
 
 import java.sql.SQLException;

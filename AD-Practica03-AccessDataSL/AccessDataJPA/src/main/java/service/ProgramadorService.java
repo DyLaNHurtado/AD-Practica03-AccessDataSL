@@ -2,7 +2,7 @@ package service;
 
 import dto.ProgramadorDTO;
 import mapper.ProgramadorMapper;
-import model.Programador;
+import dao.Programador;
 import repository.RepoProgramador;
 
 import java.sql.SQLException;

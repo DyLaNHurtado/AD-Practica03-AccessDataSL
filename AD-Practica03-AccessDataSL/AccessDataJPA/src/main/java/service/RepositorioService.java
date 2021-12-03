@@ -4,8 +4,8 @@ import dto.CommitDTO;
 import dto.RepositorioDTO;
 import mapper.CommitMapper;
 import mapper.RepositorioMapper;
-import model.Commit;
-import model.Repositorio;
+import dao.Commit;
+import dao.Repositorio;
 import repository.RepoCommit;
 import repository.RepoRepositorio;
 

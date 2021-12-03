@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+             version="2.2">
+    <persistence-unit name="default">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>dao.Commit</class>
+        <class>dao.Departamento</class>
+        <class>dao.Issue</class>
+        <class>dao.Programador</class>
+        <class>dao.Proyecto</class>
+        <class>dao.Repositorio</class>
+        <class>dao.Tecnologia</class>
+        <properties>
+            <property name="hibernate.connection.url" value="jdbc:mariadb://localhost:3306/adSL"/>
+            <property name="hibernate.connection.driver_class" value="org.mariadb.jdbc.Driver"/>
+            <property name="hibernate.connection.user" value="user"/>
+            <property name="hibernate.connection.password" value="user1234"/>
+            <!-- Para ver las consultas
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>  -->
+            <!-- Para trabajar con el esquema
+               validate: validate the schema, makes no changes to the database.
+               update: update the schema si detecta cambios.
+               create: creates the schema, destroying previous data.
+               create-drop: drop the schema when the SessionFactory is closed explicitly, typically when the application is stopped.
+               none: does nothing with the schema, makes no changes to the database-->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+        </properties>
+
+    </persistence-unit>
+</persistence>

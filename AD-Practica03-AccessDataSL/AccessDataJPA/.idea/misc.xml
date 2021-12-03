@@ -5,6 +5,8 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/resources/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/resources/META-INF/pom.xml" />
       </list>
     </option>
   </component>

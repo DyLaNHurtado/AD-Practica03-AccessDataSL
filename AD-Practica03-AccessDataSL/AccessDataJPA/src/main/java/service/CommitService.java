@@ -2,7 +2,7 @@ package service;
 
 import dto.CommitDTO;
 import mapper.CommitMapper;
-import model.Commit;
+import dao.Commit;
 import repository.RepoCommit;
 
 import javax.xml.bind.annotation.XmlElement;

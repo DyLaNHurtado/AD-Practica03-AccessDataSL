@@ -2,7 +2,7 @@ package service;
 
 import dto.DepartamentoDTO;
 import mapper.DepartamentoMapper;
-import model.Departamento;
+import dao.Departamento;
 import repository.RepoDepartamento;
 
 import java.sql.SQLException;

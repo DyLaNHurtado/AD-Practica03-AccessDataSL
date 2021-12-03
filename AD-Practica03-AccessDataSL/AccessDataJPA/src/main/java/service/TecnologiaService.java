@@ -2,7 +2,7 @@ package service;
 
 import dto.TecnologiaDTO;
 import mapper.TecnologiaMapper;
-import model.Tecnologia;
+import dao.Tecnologia;
 import repository.RepoTecnologia;
 
 import java.sql.SQLException;
